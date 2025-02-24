@@ -1,0 +1,36 @@
+{
+  "transactions": [
+    {
+      "id": "1",
+      "description": "Salário",
+      "type": "income",
+      "category": "Renda",
+      "price": 7000,
+      "createdAt": "2025-02-19T02:42:42.863Z"
+    },
+    {
+      "id": "2",
+      "description": "Pizza",
+      "type": "outcome",
+      "category": "Alimentação",
+      "price": 200,
+      "createdAt": "2025-02-19T02:42:42.863Z"
+    },
+    {
+      "id": "3",
+      "description": "Açaí",
+      "type": "outcome",
+      "category": "Alimentação",
+      "price": 90,
+      "createdAt": "2025-02-19T02:42:42.863Z"
+    },
+    {
+      "id": "4",
+      "description": "Churrascaria",
+      "type": "outcome",
+      "category": "Alimentação",
+      "price": 730,
+      "createdAt": "2025-02-19T02:42:42.863Z"
+    }
+  ]
+}
