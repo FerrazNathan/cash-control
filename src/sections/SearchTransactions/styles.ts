@@ -33,10 +33,15 @@ export const ButtonSearch = styled.button`
   align-items: center;
   gap: 0.75rem;
 
-  &:hover {
+  &:not(:disabled):hover {
     background: ${(props) => props.theme["green-500"]};
     border-color: ${(props) => props.theme["green-500"]};
     color: ${(props) => props.theme.white};
     transition: background 0.3s ease-in-out;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 `
