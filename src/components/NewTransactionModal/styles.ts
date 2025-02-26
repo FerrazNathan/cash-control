@@ -116,3 +116,15 @@ export const TransactionTypeButton = styled(RadioGroup.Item)<TransactionTypeButt
     background: ${props => props.theme['gray-600']};
   }
 `
+
+export const Label = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  span {
+    color: ${props => props.theme['gray-400']};
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+`
