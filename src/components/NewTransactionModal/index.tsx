@@ -1,7 +1,9 @@
+import { useContext } from 'react'
 import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { z } from 'zod'
 
 import * as S from './styles'
@@ -16,23 +18,25 @@ const newTransactionFormSchema = z.object({
 type NewTransactionFormInputs = z.infer<typeof newTransactionFormSchema>
 
 export function NewTransactionModal() {
+  const { createTransaction } = useContext(TransactionsContext)
   const {
     register,
     control,
+    reset,
     handleSubmit,
     formState: { isSubmitting }
   } = useForm<NewTransactionFormInputs>({
     resolver: zodResolver(newTransactionFormSchema),
-    defaultValues: {
-      description: '',
-      price: 0,
-      category: '',
-      type: 'income',
-    },
-  })
+  })  
 
-  function handleCreateNewTransaction(data: NewTransactionFormInputs) {
-    console.log(data)
+  async function handleCreateNewTransaction(data: NewTransactionFormInputs) {
+    await createTransaction({
+      description: data.description,
+      price: data.price,
+      category: data.category,
+      type: data.type,
+    })
+    reset()
   }
 
   return (
@@ -45,24 +49,35 @@ export function NewTransactionModal() {
         </S.CloseButton>
 
         <S.FormContainer onSubmit={handleSubmit(handleCreateNewTransaction)}>
-          <input
-            type="text"
-            placeholder="Descrição"
-            required
-            {...register('description')}
-          />
-          <input
-            type="number"
-            placeholder="Preço"
-            required
-            {...register('price', { valueAsNumber: true })}
-          />
-          <input
-            type="text"
-            placeholder="Categoria"
-            required
-            {...register('category')}
-          />
+          <S.Label>
+            <span>Descrição</span>
+            <input
+              type="text"
+              placeholder="Descrição"
+              required
+              {...register('description')}
+            />
+          </S.Label>
+
+          <S.Label>
+            <span>Preço</span>
+              <input
+              type="number"
+              placeholder="Preço"
+              required
+              {...register('price', { valueAsNumber: true })}
+            />
+          </S.Label>
+          
+          <S.Label>
+            <span>Categoria</span>
+            <input
+              type="text"
+              placeholder="Categoria"
+              required
+              {...register('category')}
+            />
+          </S.Label>
 
           <Controller
             control={control}

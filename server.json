@@ -31,6 +31,46 @@
       "category": "Alimentação",
       "price": 730,
       "createdAt": "2025-02-19T02:42:42.863Z"
+    },
+    {
+      "id": "b443",
+      "description": "Gás de cozinha",
+      "price": 140,
+      "category": "Utilidades",
+      "type": "outcome",
+      "createdAt": "2025-02-26T02:22:19.000Z"
+    },
+    {
+      "id": "3ca6",
+      "description": "Cartão Nubank",
+      "price": 200,
+      "category": "Cartões",
+      "type": "outcome",
+      "createdAt": "2025-02-26T02:24:11.781Z"
+    },
+    {
+      "id": "bbff",
+      "description": "TV",
+      "price": 35,
+      "category": "Utilidades",
+      "type": "outcome",
+      "createdAt": "2025-02-26T02:44:49.597Z"
+    },
+    {
+      "id": "ad62",
+      "description": "Cartão Mercado Pago",
+      "price": 1300,
+      "category": "Cartões",
+      "type": "outcome",
+      "createdAt": "2025-02-26T03:02:57.696Z"
+    },
+    {
+      "id": "d7ae",
+      "description": "Cartão Mais",
+      "price": 2500,
+      "category": "Cartões",
+      "type": "outcome",
+      "createdAt": "2025-02-26T03:08:24.087Z"
     }
   ]
 }

@@ -6,7 +6,9 @@ import * as S from './styles'
 
 export function Summary() {
   const summary = useSummary()
-  
+
+  const balanceCheck = summary.total > 0 ? 'positive' : 'negative'
+
   return (
     <S.ContainerSummary>
       <S.SummaryCard>
@@ -27,7 +29,7 @@ export function Summary() {
         <strong>{priceFormatter.format(summary.outcome)}</strong>
       </S.SummaryCard>
 
-      <S.SummaryCard variant='success'>
+      <S.SummaryCard variant={balanceCheck}>
         <header>
           <span>Total</span>
           <CurrencyDollar size={32} color='#FFF' />

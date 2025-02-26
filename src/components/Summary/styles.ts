@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 interface SummaryCardProps {
-  variant?: string;
+  variant?: 'positive' | 'negative';
 }
 
 export const ContainerSummary = styled.section`
@@ -34,7 +34,11 @@ export const SummaryCard = styled.div<SummaryCardProps>`
     font-size: 2rem;
   }
 
-  ${(props) => props.variant === 'success' && css`
+  ${(props) => props.variant === 'positive' && css`
     background: ${(props) => props.theme["green-700"]};
+  `}
+
+  ${(props) => props.variant === 'negative' && css`
+    background: ${(props) => props.theme["red-500"]};
   `}
 `

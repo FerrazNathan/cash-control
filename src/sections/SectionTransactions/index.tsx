@@ -8,8 +8,6 @@ import * as S from './styles'
 export function SectionTransactions() {
   const { transactions } = useContext(TransactionsContext)
 
-console.log('TRASNACTIONS: ', transactions);
-
   return (
     <S.ContainerTransactions>
       <SearchTransactions />
