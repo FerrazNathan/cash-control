@@ -1,50 +1,96 @@
-# React + TypeScript + Vite
+# Cash Control 💰
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Um aplicativo de controle financeiro desenvolvido em React que permite gerenciar entradas e saídas de dinheiro.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Funcionalidades
 
-## Expanding the ESLint configuration
+### 1. Gestão de Transações
+- Adicionar novas transações (entradas e saídas)
+- Visualizar histórico de transações em uma tabela
+- Categorização das transações
+- Ordenação por data mais recente
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 2. Dashboard
+- Resumo financeiro com:
+- Total de entradas
+- Total de saídas
+- Saldo total (com indicador visual positivo/negativo)
 
-- Configure the top-level `parserOptions` property like this:
+### 3. Busca e Filtros
+- Pesquisa por descrição ou categoria
+- Filtro case-insensitive
+- Resultados em tempo real
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+
+## 💻 Tecnologias Utilizadas
+
+#### Core
+- React
+- TypeScript
+- Vite
+'
+#### Estilização
+- Styled Components
+- Phosphor Icons
+- Radix UI (Dialog, Radio Group)
+
+#### Gerenciamento de Estado e Dados
+- React Context API
+- Axios
+- JSON Server (API Mock)
+
+#### Formulários e Validação
+- React Hook Form
+- Zod
+
+#### Hooks
+- useContext
+- useMemo
+- useCallback
+
+## 🛠️ Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/FerrazNathan/cash-control.git
+
+# Instale as dependências
+npm install ou yarn
+
+# Inicie o servidor JSON
+npm run server ou yarn server
+
+# Inicie a aplicação
+npm run dev ou yarn dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## 📌 Endpoints da API
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+O projeto utiliza JSON Server rodando na porta 3333 com os seguintes endpoints:
+
+GET /transactions - Lista todas as transações
+POST /transactions - Cria uma nova transação
+
+
+
+## 🔍 Estrutura do Projeto
+
 ```
+src/
+  ├── components/      # Componentes reutilizáveis
+  ├── contexts/        # Contextos React
+  ├── hooks/          # Hooks customizados
+  ├── sections/       # Seções maiores da aplicação
+  ├── styles/         # Estilos globais e temas
+  ├── utils/          # Utilitários e formatadores
+  └── lib/            # Configurações de bibliotecas
+```
+
+
+## 🎨 Temas e Estilos
+O projeto utiliza um tema customizado com uma paleta de cores predefinida, incluindo:
+- Tons de cinza para o layout base
+- Verde para indicadores positivos
+- Vermelho para indicadores negativos
