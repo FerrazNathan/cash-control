@@ -29,7 +29,6 @@ Um aplicativo de controle financeiro desenvolvido em React que permite gerenciar
 - React
 - TypeScript
 - Vite
-'
 #### Estilização
 - Styled Components
 - Phosphor Icons
@@ -70,8 +69,8 @@ npm run dev ou yarn dev
 
 O projeto utiliza JSON Server rodando na porta 3333 com os seguintes endpoints:
 
-GET /transactions - Lista todas as transações
-POST /transactions - Cria uma nova transação
+- GET /transactions - Lista todas as transações
+- POST /transactions - Cria uma nova transação
 
 
 
