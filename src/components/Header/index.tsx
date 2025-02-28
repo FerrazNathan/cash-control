@@ -1,4 +1,4 @@
-import logo from '../../assets/logo.svg'
+import LogotipoMoney from '../../assets/LogotipoMoney.webp'
 import * as Dialog from '@radix-ui/react-dialog'
 import { NewTransactionModal } from '../NewTransactionModal'
 
@@ -9,7 +9,7 @@ export function Header() {
     <S.HeaderContainer>
       <S.HeaderContent>
         <S.ContainerLogo>
-          <img src={logo} alt="Logotipo da marca" />
+          <img src={LogotipoMoney} alt="Logotipo da marca" />
           <span>Cash Control</span>
         </S.ContainerLogo>
 

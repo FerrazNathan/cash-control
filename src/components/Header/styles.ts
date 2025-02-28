@@ -22,6 +22,14 @@ export const ContainerLogo = styled.h1`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
 `
 
 export const NewTransactionButton = styled.button`
