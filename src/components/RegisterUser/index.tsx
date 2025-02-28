@@ -1,14 +1,16 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
-import * as S from './styles' // Podemos reutilizar os mesmos estilos do SignIn
+import { FormUser } from '../FormUser'
+
+import * as S from './styles'
 
 const registerFormSchema = z.object({
   email: z.string().email('E-mail inválido'),
   password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
-  confirmPassword: z.string()
+  confirmPassword: z.string().optional()
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'As senhas não conferem',
   path: ['confirmPassword']
@@ -43,51 +45,13 @@ export function RegisterUser() {
 
   return (
     <S.Container>
-      <S.Content>
-        <S.LogoContainer>
-          <h1>Cash Control</h1>
-          <span>Crie sua conta</span>
-        </S.LogoContainer>
-
-        <S.Form onSubmit={handleSubmit(handleRegister)}>
-          <S.InputContainer>
-            <input 
-              type="email" 
-              placeholder="E-mail"
-              {...register('email')}
-            />
-            {errors.email && <span>{errors.email.message}</span>}
-          </S.InputContainer>
-
-          <S.InputContainer>
-            <input 
-              type="password" 
-              placeholder="Senha"
-              {...register('password')}
-            />
-            {errors.password && <span>{errors.password.message}</span>}
-          </S.InputContainer>
-
-          <S.InputContainer>
-            <input 
-              type="password" 
-              placeholder="Confirme a senha"
-              {...register('confirmPassword')}
-            />
-            {errors.confirmPassword && (
-              <span>{errors.confirmPassword.message}</span>
-            )}
-          </S.InputContainer>
-
-          <S.SignInButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Criando conta...' : 'Criar conta'}
-          </S.SignInButton>
-
-          <S.CreateAccountLink>
-            Já tem uma conta? <Link to="/">Fazer login</Link>
-          </S.CreateAccountLink>
-        </S.Form>
-      </S.Content>
+      <FormUser 
+        handleSubmit={handleSubmit(handleRegister)}
+        register={register}
+        errors={errors}
+        isSubmitting={isSubmitting}
+        isRegisterUser
+      />
     </S.Container>
   )
 }
