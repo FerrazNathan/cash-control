@@ -2,6 +2,8 @@
 
 Um aplicativo de controle financeiro desenvolvido em React que permite gerenciar entradas e saídas de dinheiro.
 
+![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
+
 
 ## 🚀 Funcionalidades
 
