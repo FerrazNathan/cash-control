@@ -19,12 +19,12 @@ export const TransactionsTable = styled.table`
 
   td {
     padding: 1.25rem 2rem;
-    background: ${(props) => props.theme["gray-700"]};
+    background: ${(props) => props.theme.primary.medium};
 
     &:first-child {
       border-radius: 8px 0 0 8px;
       width: 50%;
-    }
+    }'
 
     &:last-child {
       border-radius: 0 8px 8px 0;
@@ -33,5 +33,5 @@ export const TransactionsTable = styled.table`
 `
 
 export const PriceHighlight = styled.span<PriceHighlightProps>`
-  color: ${(props) => props.variant === "income" ? props.theme["green-300"] : props.theme["red-300"]}
+  color: ${(props) => props.variant === "income" ? props.theme.success.medium : props.theme.error.light}
 `

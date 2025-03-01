@@ -15,7 +15,7 @@ export const LogoContainer = styled.div`
   }
 
   span {
-    color: ${props => props.theme.surface.light};
+    color: ${props => props.theme.text.light};
   }
 `
 
@@ -34,7 +34,7 @@ export const InputContainer = styled.div`
     height: 50px;
     border: 0;
     background: ${props => props.theme.text.standard};
-    color: ${props => props.theme.surface.light};
+    color: ${props => props.theme.text.light};
     padding: 0 1rem;
     border-radius: 6px;
 
@@ -74,7 +74,7 @@ export const SignInButton = styled.button`
 export const CreateAccountLink = styled.p`
   text-align: center;
   margin-top: 2rem;
-  color: ${props => props.theme.surface.light};
+  color: ${props => props.theme.text.light};
 
   a {
     color: ${props => props.theme.success.light};

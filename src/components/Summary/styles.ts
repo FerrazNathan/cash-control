@@ -17,7 +17,7 @@ export const ContainerSummary = styled.section`
 `
 
 export const SummaryCard = styled.div<SummaryCardProps>`
-  background: ${(props) => props.theme["gray-600"]};
+  background: ${(props) => props.theme.primary.light};
   border-radius: 8px;
   padding: 2rem;
 
@@ -25,7 +25,7 @@ export const SummaryCard = styled.div<SummaryCardProps>`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: ${(props) => props.theme["gray-300"]});
+    color: ${(props) => props.theme.text.light});
   }
 
   strong {
@@ -35,10 +35,10 @@ export const SummaryCard = styled.div<SummaryCardProps>`
   }
 
   ${(props) => props.variant === 'positive' && css`
-    background: ${(props) => props.theme["green-700"]};
+    background: ${(props) => props.theme.success.standard};
   `}
 
   ${(props) => props.variant === 'negative' && css`
-    background: ${(props) => props.theme["red-500"]};
+    background: ${(props) => props.theme.error.medium};
   `}
 `

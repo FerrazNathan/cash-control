@@ -3,7 +3,7 @@ export const darkTheme = {
   primary: {
     standard: '#202024',
     light: '#323238',
-    medium: '#323238',
+    medium: '#29292E',
   },
   background: {
     standard: '#121214',
@@ -11,9 +11,9 @@ export const darkTheme = {
     medium: '#202024',
   },
   text: {
-    standard: '#121214',
-    light: '#7C7C8A',
-    medium: '#323238',
+    standard: '#E1E1E6',
+    light: '#C4C4CC',
+    medium: '#8D8D99',
   },
   surface: {
     standard: '#7C7C8A',
