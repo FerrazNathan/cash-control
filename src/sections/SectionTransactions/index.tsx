@@ -2,16 +2,18 @@ import { useContext } from 'react'
 import { SearchTransactions } from '../SearchTransactions'
 import { TransactionsContext } from '../../contexts/TransactionsContext';
 import { dateFormatter, priceFormatter } from '../../utils/formatter';
+import { useTheme } from '../../hooks/useTheme';
 
 import * as S from './styles'
 
 export function SectionTransactions() {
   const { transactions } = useContext(TransactionsContext)
+  const { currentTheme, contrast } = useTheme()
 
   return (
     <S.ContainerTransactions>
       <SearchTransactions />
-      <S.TransactionsTable>
+      <S.TransactionsTable currentTheme={currentTheme} contrast={contrast}>
         <tbody>
           {transactions.map((transaction) => (
             <tr key={transaction.id}>

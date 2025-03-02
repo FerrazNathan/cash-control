@@ -1,19 +1,24 @@
 export const lightTheme = {
   white: '#FFF',
   primary: {
-    standard: '#F0F2F5',
-    light: '#E1E1E6',
-    medium: '#C4C4CC',
+    standard: '#001d49',
+    medium: '#042e6d',
+    light: '#042e6d',
   },
   background: {
-    standard: '#FEFEFE',
-    light: '#E1E1E6',
-    medium: '#F0F2F5',
+    standard: '#07439f',
+    light: '#F0F2F5',
+    medium: '#FEFEFE',
   },
   text: {
     standard: '#121214',
-    light: '#7C7C8A',
+    light: '#FCFCFC',
     medium: '#323238',
+  },
+  surface: {
+    standard: '#E1E1E6',
+    light: '#C4C4CC',
+    medium: '#8D8D99',
   },
   success: {
     standard: '#00B37E',
@@ -21,13 +26,13 @@ export const lightTheme = {
     medium: '#015F43',
   },
   error: {
-    standard: '#F75A68',
-    light: '#AB222E',
-    medium: '#7A1921',
+    standard: '#F1071C',
+    light: '#ED3E4D',
+    medium: '#CB1121',
   },
   toast: {
     success: '#00875F',
-    error: '#AB222E',
+    error: '#CB1121',
   },
   contrast: {
     standard: '#FFFFFF',
@@ -39,4 +44,4 @@ export const lightTheme = {
     tablet: '768px',
     desktop: '1024px',
   },
-}
+} as const

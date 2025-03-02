@@ -1,22 +1,22 @@
 import { createGlobalStyle } from "styled-components";
 
-export const GlobalStyle = createGlobalStyle`
+interface GlobalStyleProps {
+  contrast: boolean
+}
+
+
+export const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
 
-
-  :focus {
-    outline: none;
-    box-shadow: 0 0 0 2px ${(props) => props.theme.success.light};
-  }
-
   body {
-    background: ${(props) => props.theme.background.medium};
+    background: ${(props) => props.contrast ? props.theme.contrast.dark : props.theme.background.medium};
     color: ${(props) => props.theme.text.light};
     -webkit-font-smoothing: antialiased;
+    padding-bottom: 2rem;
   }
 
   body, input, textarea, button {
