@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 
 interface SummaryCardProps {
   variant?: 'positive' | 'negative';
+  contrast: boolean;
 }
 
 export const ContainerSummary = styled.section`
@@ -17,28 +18,31 @@ export const ContainerSummary = styled.section`
 `
 
 export const SummaryCard = styled.div<SummaryCardProps>`
-  background: ${(props) => props.theme["gray-600"]};
-  border-radius: 8px;
-  padding: 2rem;
+  ${({ theme, contrast, variant }) => css`
+    background: ${contrast ? theme.contrast.dark : theme.primary.light};
+    border-radius: 8px;
+    padding: 2rem;
+    border: 1px solid ${contrast ? theme.contrast.standard : 'transparent'};
 
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: ${(props) => props.theme["gray-300"]});
-  }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: ${theme.text.light});
+    }
 
-  strong {
-    display: block;
-    margin-top: 1rem;
-    font-size: 2rem;
-  }
+    strong {
+      display: block;
+      margin-top: 1rem;
+      font-size: 2rem;
+    }
 
-  ${(props) => props.variant === 'positive' && css`
-    background: ${(props) => props.theme["green-700"]};
-  `}
+    ${variant === 'positive' && css`
+      background: ${contrast ? theme.contrast.dark : theme.success.standard};
+    `}
 
-  ${(props) => props.variant === 'negative' && css`
-    background: ${(props) => props.theme["red-500"]};
+    ${variant === 'negative' && css`
+      background: ${contrast ? theme.contrast.dark : theme.error.medium};
+    `}
   `}
 `

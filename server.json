@@ -71,6 +71,30 @@
       "category": "Cartões",
       "type": "outcome",
       "createdAt": "2025-02-26T03:08:24.087Z"
+    },
+    {
+      "id": "6656",
+      "description": "Pastel",
+      "price": 100,
+      "category": "Alimentação",
+      "type": "outcome",
+      "createdAt": "2025-03-02T00:18:12.311Z"
+    },
+    {
+      "id": "d1dd",
+      "description": "Cartão Mercado Pago",
+      "price": 2000,
+      "category": "Cartões",
+      "type": "outcome",
+      "createdAt": "2025-03-02T00:19:06.577Z"
+    },
+    {
+      "id": "9a9b",
+      "description": "teste",
+      "price": 300,
+      "category": "teste",
+      "type": "income",
+      "createdAt": "2025-03-02T02:51:06.499Z"
     }
   ]
 }

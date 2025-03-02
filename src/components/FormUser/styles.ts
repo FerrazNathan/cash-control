@@ -11,11 +11,11 @@ export const LogoContainer = styled.div`
   margin-bottom: 2rem;
 
   h1 {
-    color: ${props => props.theme['green-500']};
+    color: ${props => props.theme.success.light};
   }
 
   span {
-    color: ${props => props.theme['gray-300']};
+    color: ${props => props.theme.text.light};
   }
 `
 
@@ -33,18 +33,18 @@ export const InputContainer = styled.div`
   input {
     height: 50px;
     border: 0;
-    background: ${props => props.theme['gray-900']};
-    color: ${props => props.theme['gray-300']};
+    background: ${props => props.theme.text.standard};
+    color: ${props => props.theme.text.light};
     padding: 0 1rem;
     border-radius: 6px;
 
     &::placeholder {
-      color: ${props => props.theme['gray-500']};
+      color: ${props => props.theme.surface.standard};
     }
   }
 
   span {
-    color: ${props => props.theme['red-300']};
+    color: ${props => props.theme.error.light};
     font-size: 0.875rem;
   }
 `
@@ -52,7 +52,7 @@ export const InputContainer = styled.div`
 export const SignInButton = styled.button`
   height: 50px;
   border: 0;
-  background: ${props => props.theme['green-500']};
+  background: ${props => props.theme.success.light};
   color: ${props => props.theme.white};
   font-weight: bold;
   padding: 0 1.25rem;
@@ -66,7 +66,7 @@ export const SignInButton = styled.button`
   }
 
   &:not(:disabled):hover {
-    background: ${props => props.theme['green-700']};
+    background: ${props => props.theme.success.standard};
     transition: background-color 0.2s;
   }
 `
@@ -74,10 +74,10 @@ export const SignInButton = styled.button`
 export const CreateAccountLink = styled.p`
   text-align: center;
   margin-top: 2rem;
-  color: ${props => props.theme['gray-300']};
+  color: ${props => props.theme.text.light};
 
   a {
-    color: ${props => props.theme['green-500']};
+    color: ${props => props.theme.success.light};
     text-decoration: none;
 
     &:hover {

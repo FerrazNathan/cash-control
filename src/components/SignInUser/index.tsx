@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { FormUser } from '../FormUser'
+import { toast } from 'react-toastify'
 
 import * as S from './styles'
 
@@ -30,8 +31,9 @@ export function SignInUser() {
     try {
       await signIn(data)
       navigate('/transactions')
+      toast.success('Login realizado com sucesso')
     } catch (error) {
-      alert('Credenciais inválidas')
+      toast.error('Credenciais inválidas')
       console.error('Credenciais inválidas:', error)
     }
   }

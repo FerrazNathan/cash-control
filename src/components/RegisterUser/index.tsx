@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { FormUser } from '../FormUser'
+import { toast } from 'react-toastify'
 
 import * as S from './styles'
 
@@ -37,8 +38,9 @@ export function RegisterUser() {
         password: data.password
       })
       navigate('/transactions')
+      toast.success('Conta criada com sucesso')
     } catch (error) {
-      alert('Erro ao criar conta')
+      toast.error('Erro ao criar conta')
       console.error('Erro ao criar conta:', error)
     }
   }
