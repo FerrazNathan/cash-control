@@ -1,13 +1,25 @@
 import { createContext, useEffect, useState, ReactNode, useCallback } from "react";
-import { api } from "../lib/axios";
+import { 
+  collection, 
+  addDoc, 
+  query, 
+  getDocs, 
+  orderBy, 
+  where,
+  serverTimestamp,
+  Timestamp 
+} from 'firebase/firestore';
+import { db } from "../lib/firebase";
+import { useAuth } from "../hooks/useAuth";
 
 interface Transaction {
-  id: number
+  id: string
   description: string
   type: 'income' | 'outcome'
   price: number
   category: string
   createdAt: string
+  userId: string
 }
 
 interface NewTransactionFormInputs {
@@ -15,7 +27,6 @@ interface NewTransactionFormInputs {
   price: number
   category: string
   type: 'income' | 'outcome'
-  // createdAt: string
 }
 
 interface TransactionsContextType {
@@ -32,45 +43,88 @@ export const TransactionsContext = createContext({} as TransactionsContextType);
 
 export function TransactionsProvider({ children }: TransactionsProviderProps) { 
   const [transactions, setTransactions] = useState<Transaction[]>([])
+  const { user } = useAuth()
   
-  const getTransactions = useCallback(async (query?: string) => {
-
-    const response = await api.get('/transactions', {
-      params: {
-        _sort: 'createdAt',
-        _order: 'desc',
-        q: query,
-      }
-    })
-
-    const data = response.data
-
-    if (query) {
-      const filteredData = data.filter((transaction: Transaction) => 
-        transaction.description.toLowerCase().includes(query.toLowerCase()) ||
-        transaction.category.toLowerCase().includes(query.toLowerCase())
-      )
-      setTransactions(filteredData)
-    } else {
-      setTransactions(data)
+  const getTransactions = useCallback(async (searchQuery?: string) => {
+    if (!user) {
+      return;
     }
-  }, [])  
+
+    try {      
+      const transactionsRef = collection(db, 'transactions');
+      
+      // Query básica primeiro, sem orderBy
+      const q = query(
+        transactionsRef,
+        where('userId', '==', user.id)
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      let transactionsData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate?.()?.toISOString() || new Date().toISOString()
+      })) as Transaction[];
+
+      // Ordenar localmente por enquanto
+      transactionsData.sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      // Aplicar filtro de busca
+      if (searchQuery) {
+        const searchLower = searchQuery.toLowerCase().trim();
+        transactionsData = transactionsData.filter(transaction => 
+          transaction.description.toLowerCase().includes(searchLower) ||
+          transaction.category.toLowerCase().includes(searchLower)
+        );
+      }
+
+      setTransactions(transactionsData);
+    } catch (error) {
+      console.error('Erro ao buscar transações:', error);
+    }
+  }, [user]);
   
   const createTransaction = useCallback(async (data: NewTransactionFormInputs) => {
-    const response = await api.post('/transactions', {
-      description: data.description,
-      price: data.price,
-      category: data.category,
-      type: data.type,
-      createdAt: new Date(),
-    })
+    if (!user) return;
 
-    setTransactions(state => [response.data, ...state])
-  }, [])
+    try {
+      const transactionsRef = collection(db, 'transactions');
+      const newTransaction = {
+        description: data.description,
+        price: data.price,
+        category: data.category,
+        type: data.type,
+        createdAt: serverTimestamp(),
+        userId: user.id
+      };
+
+      const docRef = await addDoc(transactionsRef, newTransaction);
+      
+      setTransactions(state => [{
+        id: docRef.id,
+        ...newTransaction,
+        createdAt: new Date().toISOString()
+      }, ...state]);
+    } catch (error) {
+      console.error('Erro ao criar transação:', error);
+      throw new Error('Erro ao criar transação');
+    }
+  }, [user])
 
   useEffect(() => {
-    getTransactions()
-  }, [getTransactions])
+    const fetchData = async () => {
+      if (user) {
+        await getTransactions();
+      } else {
+        setTransactions([]);
+      }
+    };
+
+    fetchData();
+  }, [user, getTransactions]);
   
   return (
     <TransactionsContext.Provider
