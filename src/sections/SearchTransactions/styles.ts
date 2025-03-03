@@ -17,15 +17,18 @@ export const InputSearch = styled.input<InputSearchProps>`
   ${({ theme, contrast, currentTheme }) => css`
     flex: 1;
     border-radius: 8px;
-    border: 1px solid ${contrast ? theme.contrast.highlight : 'transparent'};
+    border: 1px solid ${contrast ? theme.contrast.highlight : theme.surface.light};
     background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.background.standard : theme.background.medium};
     color: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.text.light : theme.text.standard};
     padding: 1rem;
     cursor: pointer;
-    box-shadow: 0px 4px 16px 4px rgba(29, 29, 29, 0.24);
 
     &::placeholder {
       color: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.surface.standard : theme.surface.light};
+    }
+
+    &:focus {
+      outline: none;
     }
   `}
 `
