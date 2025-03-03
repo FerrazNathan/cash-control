@@ -4,10 +4,8 @@ import {
   addDoc, 
   query, 
   getDocs, 
-  orderBy, 
   where,
   serverTimestamp,
-  Timestamp 
 } from 'firebase/firestore';
 import { db } from "../lib/firebase";
 import { useAuth } from "../hooks/useAuth";
@@ -51,8 +49,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     }
 
     try {      
-      const transactionsRef = collection(db, 'transactions');
-      
+      const transactionsRef = collection(db, 'transactions');      
       // Query básica primeiro, sem orderBy
       const q = query(
         transactionsRef,

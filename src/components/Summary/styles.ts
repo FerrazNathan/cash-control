@@ -15,6 +15,11 @@ export const ContainerSummary = styled.section`
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   margin-top: -5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 `
 
 export const SummaryCard = styled.div<SummaryCardProps>`
