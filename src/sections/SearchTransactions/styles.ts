@@ -11,7 +11,6 @@ export const SearchTransactionsContainer = styled.form`
   gap: 1rem;
   overflow: hidden;
   margin-bottom: 1.5rem;
-  // padding: 0.5rem;
 `
 
 export const InputSearch = styled.input<InputSearchProps>`
