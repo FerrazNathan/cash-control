@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { SearchTransactions } from '../SearchTransactions'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { dateFormatter, priceFormatter } from '../../utils/formatter'
-import { PencilSimpleLine , Trash  } from 'phosphor-react'
+import { PencilSimpleLine, Trash } from 'phosphor-react'
 import { useTheme } from '../../hooks/useTheme';
 
 import * as S from './styles'
@@ -27,36 +27,48 @@ export function SectionTransactions() {
           <S.TransactionsGrid currentTheme={currentTheme} contrast={contrast}>
             {transactions.map((transaction) => {
               return (
-                <S.TransactionRow 
+                <S.TransactionRow
                   key={transaction.id}
                   currentTheme={currentTheme}
                   contrast={contrast}
                 >
-                  <span data-label="Nome">
-                    {transaction.description}
-                  </span>
-                  
-                  <span data-label="Preço">
-                    <S.PriceHighlight variant={transaction.type}>
-                      {transaction.type === 'outcome' && '- '}
-                      {priceFormatter.format(transaction.price)}
-                    </S.PriceHighlight>
-                  </span>
+                  <S.ContainerCardTransctions>
+                    <strong>Nome: </strong>
+                    <span data-label="Nome">
+                      {transaction.description}
+                    </span>
+                  </S.ContainerCardTransctions>
 
-                  <span data-label="Categoria">
-                    {transaction.category}
-                  </span>
+                  <S.ContainerCardTransctions>
+                    <strong>Preço:</strong>
+                    <span data-label="Preço">
+                      <S.PriceHighlight variant={transaction.type}>
+                        {transaction.type === 'outcome' && '- '}
+                        {priceFormatter.format(transaction.price)}
+                      </S.PriceHighlight>
+                    </span>
+                  </S.ContainerCardTransctions>
 
-                  <span data-label="Data">
-                    {dateFormatter.format(new Date(transaction.createdAt))}
-                  </span>
+                  <S.ContainerCardTransctions>
+                    <strong>Categoria: </strong>
+                    <span data-label="Categoria">
+                      {transaction.category}
+                    </span>
+                  </S.ContainerCardTransctions>
+
+                  <S.ContainerCardTransctions>
+                    <strong>Data: </strong>
+                    <span data-label="Data">
+                      {dateFormatter.format(new Date(transaction.createdAt))}
+                    </span>
+                  </S.ContainerCardTransctions>
 
                   <S.ActionButtons contrast={contrast} currentTheme={currentTheme}>
                     <button title="Editar">
-                      <PencilSimpleLine  size={20} />
+                      <PencilSimpleLine size={20} />
                     </button>
                     <button title="Excluir">
-                      <Trash  size={20} />
+                      <Trash size={20} />
                     </button>
                   </S.ActionButtons>
                 </S.TransactionRow>

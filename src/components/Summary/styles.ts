@@ -17,8 +17,15 @@ export const ContainerSummary = styled.section`
   margin-top: -5rem;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
     gap: 1rem;
+    overflow-x: scroll;
+
+    scrollbar-width: none; /* Para Firefox */
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `
 
@@ -49,5 +56,9 @@ export const SummaryCard = styled.div<SummaryCardProps>`
     ${variant === 'negative' && css`
       background: ${contrast ? theme.contrast.dark : theme.error.medium};
     `}
+
+    @media (max-width: 768px) {
+      padding: 1rem;
+    }
   `}
 `

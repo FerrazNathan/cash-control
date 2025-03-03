@@ -9,6 +9,8 @@ interface InputSearchProps {
 export const SearchTransactionsContainer = styled.form`
   display: flex;
   gap: 1rem;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
 `
 
 export const InputSearch = styled.input<InputSearchProps>`
@@ -53,6 +55,16 @@ export const ButtonSearch = styled.button<InputSearchProps>`
     &:disabled {
       opacity: 0.7;
       cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      padding: 0.5rem;
+      font-size: 0.875rem;
+      gap: 0.5rem;
+
+      svg {
+        display: none;
+      }
     }
   `}
 `

@@ -50,10 +50,10 @@ export function NewTransactionModal() {
 
         <S.FormContainer onSubmit={handleSubmit(handleCreateNewTransaction)}>
           <S.Label>
-            <span>Descrição</span>
+            <span>Nome</span>
             <input
               type="text"
-              placeholder="Descrição"
+              placeholder="Nome"
               required
               {...register('description')}
             />

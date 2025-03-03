@@ -10,7 +10,7 @@ export const LogoContainer = styled.div`
   text-align: center;
   margin-bottom: 2rem;
 
-  h1 {
+  h2 {
     color: ${props => props.theme.success.light};
   }
 
@@ -34,7 +34,7 @@ export const InputContainer = styled.div`
     height: 50px;
     border: 0;
     background: ${props => props.theme.text.standard};
-    color: ${props => props.theme.text.light};
+    color: ${props => props.theme.primary.light};
     padding: 0 1rem;
     border-radius: 6px;
 
