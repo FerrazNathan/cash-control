@@ -1,18 +1,41 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { SearchTransactions } from '../SearchTransactions'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { dateFormatter, priceFormatter } from '../../utils/formatter'
 import { PencilSimpleLine, Trash } from 'phosphor-react'
 import { useTheme } from '../../hooks/useTheme';
+import { DeleteConfirmation } from '../../components/DeleteConfirmation'
 
 import * as S from './styles'
 
 export function SectionTransactions() {
-  const { transactions } = useContext(TransactionsContext)
   const { currentTheme, contrast } = useTheme()
+  const { transactions, deleteTransaction } = useContext(TransactionsContext)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [transactionToDelete, setTransactionToDelete] = useState<string | null>(null)
+
+  async function handleDeleteTransaction(id: string) {
+    setTransactionToDelete(id)
+    setIsDeleteModalOpen(true)
+  }
 
   return (
     <S.ContainerTransactions>
+      <DeleteConfirmation 
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false)
+          setTransactionToDelete(null)
+        }}
+        onConfirm={() => {
+          if (transactionToDelete) {
+            deleteTransaction(transactionToDelete)
+            setIsDeleteModalOpen(false)
+            setTransactionToDelete(null)
+          }
+        }}
+      />
+
       <SearchTransactions />
       {transactions && transactions.length > 0 && (
         <S.ContainerMainGridTransactions>
@@ -63,12 +86,15 @@ export function SectionTransactions() {
                     </span>
                   </S.ContainerCardTransctions>
 
-                  <S.ActionButtons contrast={contrast} currentTheme={currentTheme}>
+                  <S.ActionButtons>
                     <button title="Editar">
-                      <PencilSimpleLine size={20} />
+                      <PencilSimpleLine size={20} color={contrast ? 'yellow' : 'green'} />
                     </button>
-                    <button title="Excluir">
-                      <Trash size={20} />
+                    <button
+                      title="Excluir"
+                      onClick={() => handleDeleteTransaction(transaction.id)}
+                    >
+                      <Trash size={20} color={contrast ? 'yellow' : 'red'} />
                     </button>
                   </S.ActionButtons>
                 </S.TransactionRow>

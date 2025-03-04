@@ -118,25 +118,19 @@ export const TransactionRow = styled.div<TransactionsGridProps>`
   `}
 `
 
-export const ActionButtons = styled.div<TransactionsGridProps>`
-  ${({ theme, contrast, currentTheme }) => css`
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
+export const ActionButtons = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
 
-    button {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 0.25rem;
-      border-radius: 4px;
-      transition: all 0.2s;
-
-      & svg {
-        color: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.text.light : 'none'};
-      }
-    }
-  `}
+  button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
 `
 
 export const PriceHighlight = styled.span<PriceHighlightProps>`

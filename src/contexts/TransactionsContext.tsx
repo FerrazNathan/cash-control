@@ -6,6 +6,8 @@ import {
   getDocs, 
   where,
   serverTimestamp,
+  deleteDoc,
+  doc,
 } from 'firebase/firestore';
 import { db } from "../lib/firebase";
 import { useAuth } from "../hooks/useAuth";
@@ -31,6 +33,7 @@ interface TransactionsContextType {
   transactions: Transaction[]
   getTransactions: (query?: string) => Promise<void>
   createTransaction: (data: NewTransactionFormInputs) => Promise<void>
+  deleteTransaction: (id: string) => Promise<void>
 }
 
 interface TransactionsProviderProps {
@@ -111,6 +114,17 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     }
   }, [user])
 
+  const deleteTransaction = async (id: string) => {
+    try {
+      const transactionRef = doc(db, 'transactions', id)
+      await deleteDoc(transactionRef)
+      
+      setTransactions(state => state.filter(transaction => transaction.id !== id))
+    } catch (error) {
+      console.error('Erro ao deletar transação:', error)
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
@@ -125,7 +139,12 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   
   return (
     <TransactionsContext.Provider
-      value={{ transactions, getTransactions, createTransaction }}
+      value={{ 
+        transactions, 
+        getTransactions, 
+        createTransaction, 
+        deleteTransaction 
+      }}
     >
       {children}
     </TransactionsContext.Provider>
