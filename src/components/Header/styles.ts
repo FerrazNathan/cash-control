@@ -69,5 +69,10 @@ export const NewTransactionButton = styled.button<HeaderContainerProps>`
       color: ${contrast ? theme.contrast.dark : theme.white};
       transition: background 0.3s ease-in-out;
     }
+
+    @media(max-width: 768px) {
+      padding: 0.5rem;
+      font-size: 0.875rem;
+    }
   `}
 `
