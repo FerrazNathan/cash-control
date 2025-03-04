@@ -3,7 +3,6 @@ import { SignIn } from './pages/SignIn/index'
 import { Register } from './pages/Register/index'
 import { Transactions } from './pages/Transactions'
 import { useAuth } from './hooks/useAuth'
-import { DefaultLayout } from './layouts/DefaultLayout'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth()
@@ -24,14 +23,10 @@ export function Router() {
     <Routes>
       <Route path="/" element={<SignIn />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/" element={<DefaultLayout />}>
+      <Route path="/" element={<Transactions />}>
         <Route 
           path="/transactions" 
-          element={
-            <PrivateRoute>
-              <Transactions />
-            </PrivateRoute>
-          } 
+          element={<Transactions />} 
         />
       </Route>
     </Routes>
