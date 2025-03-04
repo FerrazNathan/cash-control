@@ -8,13 +8,14 @@ import {
   serverTimestamp,
   deleteDoc,
   doc,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from "../lib/firebase";
 import { useAuth } from "../hooks/useAuth";
 
-interface Transaction {
+export interface Transaction {
   id: string
-  description: string
+  name: string
   type: 'income' | 'outcome'
   price: number
   category: string
@@ -23,7 +24,7 @@ interface Transaction {
 }
 
 interface NewTransactionFormInputs {
-  description: string
+  name: string
   price: number
   category: string
   type: 'income' | 'outcome'
@@ -34,6 +35,7 @@ interface TransactionsContextType {
   getTransactions: (query?: string) => Promise<void>
   createTransaction: (data: NewTransactionFormInputs) => Promise<void>
   deleteTransaction: (id: string) => Promise<void>
+  updateTransaction: (id: string, data: NewTransactionFormInputs) => Promise<void>
 }
 
 interface TransactionsProviderProps {
@@ -76,7 +78,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       if (searchQuery) {
         const searchLower = searchQuery.toLowerCase().trim();
         transactionsData = transactionsData.filter(transaction => 
-          transaction.description.toLowerCase().includes(searchLower) ||
+          transaction.name.toLowerCase().includes(searchLower) ||
           transaction.category.toLowerCase().includes(searchLower)
         );
       }
@@ -93,7 +95,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     try {
       const transactionsRef = collection(db, 'transactions');
       const newTransaction = {
-        description: data.description,
+        name: data.name,
         price: data.price,
         category: data.category,
         type: data.type,
@@ -125,6 +127,20 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     }
   }
 
+  const updateTransaction = async (id: string, data: NewTransactionFormInputs) => {
+    const transactionRef = doc(db, 'transactions', id)
+    await updateDoc(transactionRef, {
+      ...data,
+      updatedAt: serverTimestamp()
+    })
+
+    setTransactions(state => state.map(transaction => 
+      transaction.id === id 
+        ? { ...transaction, ...data } 
+        : transaction
+    ))
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
@@ -143,7 +159,8 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         transactions, 
         getTransactions, 
         createTransaction, 
-        deleteTransaction 
+        deleteTransaction,
+        updateTransaction,
       }}
     >
       {children}

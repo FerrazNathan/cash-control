@@ -20,7 +20,7 @@ export const ContainerSummary = styled.section`
     gap: 1rem;
     overflow-x: scroll;
 
-    scrollbar-width: none; /* Para Firefox */
+    scrollbar-width: none;
     -ms-overflow-style: none;
 
     &::-webkit-scrollbar {
