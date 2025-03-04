@@ -54,8 +54,6 @@ export const TransactionsGrid = styled.div<TransactionsGridProps>`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;    
-    max-height: 600px;
-    overflow-y: auto;
     min-width: 768px;
     color: ${contrast ? theme.contrast.standard : currentTheme === 'dark' ? theme.text.light : theme.text.medium};
 
@@ -112,7 +110,7 @@ export const TransactionRow = styled.div<TransactionsGridProps>`
       padding: 1rem;
     }
 
-    @media(max-width: 406px) {
+    @media(max-width: 448px) {
       width: 250px;
     }
   `}
