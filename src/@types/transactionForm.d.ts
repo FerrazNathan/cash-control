@@ -4,7 +4,7 @@ export interface TransactionFormInputs {
 	category: string
 	type: 'income' | 'outcome'
 	isRecurrent: boolean
-	recurrentMonths: number
+	recurrentMonths?: number
 }
 
 export interface EditTransactionFormInputs {
