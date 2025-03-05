@@ -12,30 +12,18 @@ import {
 } from 'firebase/firestore';
 import { db } from "../lib/firebase";
 import { useAuth } from "../hooks/useAuth";
-
-export interface Transaction {
-  id: string
-  name: string
-  type: 'income' | 'outcome'
-  price: number
-  category: string
-  createdAt: string
-  userId: string
-}
-
-interface NewTransactionFormInputs {
-  name: string
-  price: number
-  category: string
-  type: 'income' | 'outcome'
-}
+import { 
+  TransactionFormInputs, 
+  EditTransactionFormInputs, 
+  Transaction 
+} from "../@types/transactionForm";
 
 interface TransactionsContextType {
   transactions: Transaction[]
   getTransactions: (query?: string) => Promise<void>
-  createTransaction: (data: NewTransactionFormInputs) => Promise<void>
+  createTransaction: (data: TransactionFormInputs) => Promise<void>
   deleteTransaction: (id: string) => Promise<void>
-  updateTransaction: (id: string, data: NewTransactionFormInputs) => Promise<void>
+  updateTransaction: (id: string, data: EditTransactionFormInputs) => Promise<void>
 }
 
 interface TransactionsProviderProps {
@@ -89,7 +77,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     }
   }, [user]);
   
-  const createTransaction = useCallback(async (data: NewTransactionFormInputs) => {
+  const createTransaction = useCallback(async (data: TransactionFormInputs) => {
     if (!user) return;
 
     try {
@@ -100,7 +88,9 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         category: data.category,
         type: data.type,
         createdAt: serverTimestamp(),
-        userId: user.id
+        userId: user.id,
+        isRecurrent: data.isRecurrent,
+        recurrentMonths: data.recurrentMonths
       };
 
       const docRef = await addDoc(transactionsRef, newTransaction);
@@ -127,7 +117,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     }
   }
 
-  const updateTransaction = async (id: string, data: NewTransactionFormInputs) => {
+  const updateTransaction = async (id: string, data: EditTransactionFormInputs) => {
     const transactionRef = doc(db, 'transactions', id)
     await updateDoc(transactionRef, {
       ...data,

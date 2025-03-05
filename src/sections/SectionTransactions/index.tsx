@@ -5,6 +5,8 @@ import { dateFormatter, priceFormatter } from '../../utils/formatter'
 import { PencilSimpleLine, Trash } from 'phosphor-react'
 import { useTheme } from '../../hooks/useTheme';
 import { DeleteConfirmation } from '../../components/DeleteConfirmation'
+import { Transaction } from '../../@types/transactionForm'
+import { EditTransaction } from '../../components/EditTransaction'
 
 import * as S from './styles'
 
@@ -13,10 +15,22 @@ export function SectionTransactions() {
   const { transactions, deleteTransaction } = useContext(TransactionsContext)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [transactionToDelete, setTransactionToDelete] = useState<string | null>(null)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [transactionToEdit, setTransactionToEdit] = useState<Transaction | null>(null)
 
   async function handleDeleteTransaction(id: string) {
     setTransactionToDelete(id)
     setIsDeleteModalOpen(true)
+  }
+
+  function handleOpenEditModal(transaction: Transaction) {
+    setTransactionToEdit(transaction)
+    setIsEditModalOpen(true)
+  }
+
+  function handleCloseEditModal() {
+    setTransactionToEdit(null)
+    setIsEditModalOpen(false)
   }
 
   return (
@@ -58,7 +72,7 @@ export function SectionTransactions() {
                   <S.ContainerCardTransctions>
                     <strong>Nome: </strong>
                     <span data-label="Nome">
-                      {transaction.description}
+                      {transaction.name}
                     </span>
                   </S.ContainerCardTransctions>
 
@@ -87,7 +101,10 @@ export function SectionTransactions() {
                   </S.ContainerCardTransctions>
 
                   <S.ActionButtons>
-                    <button title="Editar">
+                    <button 
+                      title="Editar"
+                      onClick={() => handleOpenEditModal(transaction)}
+                    >
                       <PencilSimpleLine size={20} color={contrast ? 'yellow' : 'green'} />
                     </button>
                     <button
@@ -102,6 +119,14 @@ export function SectionTransactions() {
             })}
           </S.TransactionsGrid>
         </S.ContainerMainGridTransactions>
+      )}
+
+      {transactionToEdit && (
+        <EditTransaction
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
+          transaction={transactionToEdit}
+        />
       )}
     </S.ContainerTransactions>
   )

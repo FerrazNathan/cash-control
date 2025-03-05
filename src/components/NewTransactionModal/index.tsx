@@ -9,34 +9,39 @@ import { z } from 'zod'
 import * as S from './styles'
 
 const newTransactionFormSchema = z.object({
-  description: z.string(),
+  name: z.string(),
   price: z.number(),
   category: z.string(),
   type: z.enum(['income', 'outcome']),
+  isRecurrent: z.boolean(),
+  recurrentMonths: z.number().optional(),
 })
 
 type NewTransactionFormInputs = z.infer<typeof newTransactionFormSchema>
 
-export function NewTransactionModal() {
+interface NewTransactionModalProps {
+  onClose?: () => void
+}
+
+export function NewTransactionModal({ onClose }: NewTransactionModalProps) {
   const { createTransaction } = useContext(TransactionsContext)
   const {
     register,
     control,
-    reset,
+    watch,
     handleSubmit,
-    formState: { isSubmitting }
+    reset,
+    formState: { isSubmitting, errors }
   } = useForm<NewTransactionFormInputs>({
     resolver: zodResolver(newTransactionFormSchema),
   })  
 
-  async function handleCreateNewTransaction(data: NewTransactionFormInputs) {
-    await createTransaction({
-      description: data.description,
-      price: data.price,
-      category: data.category,
-      type: data.type,
-    })
+  const isRecurrent = watch('isRecurrent')
+
+  async function handleCreateTransaction(data: NewTransactionFormInputs) {
+    await createTransaction(data)
     reset()
+    onClose?.()
   }
 
   return (
@@ -48,15 +53,16 @@ export function NewTransactionModal() {
           <X size={24} />
         </S.CloseButton>
 
-        <S.FormContainer onSubmit={handleSubmit(handleCreateNewTransaction)}>
+        <S.FormContainer onSubmit={handleSubmit(handleCreateTransaction)}>
           <S.Label>
             <span>Nome</span>
             <input
               type="text"
               placeholder="Nome"
               required
-              {...register('description')}
+              {...register('name')}
             />
+            {errors.name && <S.ErrorMessage>{errors.name.message}</S.ErrorMessage>}
           </S.Label>
 
           <S.Label>
@@ -67,6 +73,7 @@ export function NewTransactionModal() {
               required
               {...register('price', { valueAsNumber: true })}
             />
+            {errors.price && <S.ErrorMessage>{errors.price.message}</S.ErrorMessage>}
           </S.Label>
           
           <S.Label>
@@ -77,7 +84,30 @@ export function NewTransactionModal() {
               required
               {...register('category')}
             />
+            {errors.category && <S.ErrorMessage>{errors.category.message}</S.ErrorMessage>}
           </S.Label>
+
+          <S.RecurrentContainer>
+            <span>Transação Recorrente?</span>
+            <input
+              type="checkbox"
+              {...register('isRecurrent')}
+            />
+          </S.RecurrentContainer>
+
+          {isRecurrent && (
+            <S.Label>
+              <span>Número de meses</span>
+              <input
+                type="number"
+                placeholder="Número de meses"
+                {...register('recurrentMonths', { valueAsNumber: true })}
+              />
+              {errors.recurrentMonths && (
+                <S.ErrorMessage>{errors.recurrentMonths.message}</S.ErrorMessage>
+              )}
+            </S.Label>
+          )}
 
           <Controller
             control={control}
