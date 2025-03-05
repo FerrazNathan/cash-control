@@ -90,7 +90,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         createdAt: serverTimestamp(),
         userId: user.id,
         isRecurrent: data.isRecurrent,
-        recurrentMonths: data.recurrentMonths
+        recurrentMonths: data.isRecurrent ? data.recurrentMonths || 1 : 0
       };
 
       const docRef = await addDoc(transactionsRef, newTransaction);
