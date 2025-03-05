@@ -8,32 +8,22 @@ import {
   serverTimestamp,
   deleteDoc,
   doc,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from "../lib/firebase";
 import { useAuth } from "../hooks/useAuth";
-
-interface Transaction {
-  id: string
-  description: string
-  type: 'income' | 'outcome'
-  price: number
-  category: string
-  createdAt: string
-  userId: string
-}
-
-interface NewTransactionFormInputs {
-  description: string
-  price: number
-  category: string
-  type: 'income' | 'outcome'
-}
+import { 
+  TransactionFormInputs, 
+  EditTransactionFormInputs, 
+  Transaction 
+} from "../@types/transactionForm";
 
 interface TransactionsContextType {
   transactions: Transaction[]
   getTransactions: (query?: string) => Promise<void>
-  createTransaction: (data: NewTransactionFormInputs) => Promise<void>
+  createTransaction: (data: TransactionFormInputs) => Promise<void>
   deleteTransaction: (id: string) => Promise<void>
+  updateTransaction: (id: string, data: EditTransactionFormInputs) => Promise<void>
 }
 
 interface TransactionsProviderProps {
@@ -76,7 +66,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       if (searchQuery) {
         const searchLower = searchQuery.toLowerCase().trim();
         transactionsData = transactionsData.filter(transaction => 
-          transaction.description.toLowerCase().includes(searchLower) ||
+          transaction.name.toLowerCase().includes(searchLower) ||
           transaction.category.toLowerCase().includes(searchLower)
         );
       }
@@ -87,18 +77,20 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     }
   }, [user]);
   
-  const createTransaction = useCallback(async (data: NewTransactionFormInputs) => {
+  const createTransaction = useCallback(async (data: TransactionFormInputs) => {
     if (!user) return;
 
     try {
       const transactionsRef = collection(db, 'transactions');
       const newTransaction = {
-        description: data.description,
+        name: data.name,
         price: data.price,
         category: data.category,
         type: data.type,
         createdAt: serverTimestamp(),
-        userId: user.id
+        userId: user.id,
+        isRecurrent: data.isRecurrent,
+        recurrentMonths: data.recurrentMonths
       };
 
       const docRef = await addDoc(transactionsRef, newTransaction);
@@ -125,6 +117,20 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     }
   }
 
+  const updateTransaction = async (id: string, data: EditTransactionFormInputs) => {
+    const transactionRef = doc(db, 'transactions', id)
+    await updateDoc(transactionRef, {
+      ...data,
+      updatedAt: serverTimestamp()
+    })
+
+    setTransactions(state => state.map(transaction => 
+      transaction.id === id 
+        ? { ...transaction, ...data } 
+        : transaction
+    ))
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
@@ -143,7 +149,8 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         transactions, 
         getTransactions, 
         createTransaction, 
-        deleteTransaction 
+        deleteTransaction,
+        updateTransaction,
       }}
     >
       {children}
