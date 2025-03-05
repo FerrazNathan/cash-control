@@ -7,14 +7,17 @@ import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { z } from 'zod'
 
 import * as S from './styles'
+import { useTheme } from '../../hooks/useTheme'
 
 const newTransactionFormSchema = z.object({
-  name: z.string(),
-  price: z.number(),
-  category: z.string(),
-  type: z.enum(['income', 'outcome']),
-  isRecurrent: z.boolean(),
-  recurrentMonths: z.number().optional(),
+  name: z.string().min(1, "Nome é obrigatório"),
+  price: z.number().min(1, "Preço é obrigatório").transform((val) => Number(val)),
+  category: z.string().min(1, "Categoria é obrigatória"),
+  type: z.enum(['income', 'outcome']).refine(value => value !== undefined, {
+    message: "Tipo é obrigatório",
+  }).default('income'),
+  isRecurrent: z.boolean().default(false),
+  recurrentMonths: z.number().optional()
 })
 
 type NewTransactionFormInputs = z.infer<typeof newTransactionFormSchema>
@@ -25,6 +28,8 @@ interface NewTransactionModalProps {
 
 export function NewTransactionModal({ onClose }: NewTransactionModalProps) {
   const { createTransaction } = useContext(TransactionsContext)
+  const { currentTheme, contrast } = useTheme()
+  
   const {
     register,
     control,
@@ -43,7 +48,7 @@ export function NewTransactionModal({ onClose }: NewTransactionModalProps) {
     reset()
     onClose?.()
   }
-
+  
   return (
     <Dialog.Portal> {/* Renderiza o conteúdo do modal no final do DOM (fora da hierarquia atual) para evitar problemas de z-index */}
       <S.Overlay /> {/* Camada escura de fundo que fica por trás do modal */}
@@ -53,13 +58,16 @@ export function NewTransactionModal({ onClose }: NewTransactionModalProps) {
           <X size={24} />
         </S.CloseButton>
 
-        <S.FormContainer onSubmit={handleSubmit(handleCreateTransaction)}>
+        <S.FormContainer 
+          onSubmit={handleSubmit(handleCreateTransaction)}
+          currentTheme={currentTheme}
+          contrast={contrast}
+        >
           <S.Label>
             <span>Nome</span>
             <input
               type="text"
               placeholder="Nome"
-              required
               {...register('name')}
             />
             {errors.name && <S.ErrorMessage>{errors.name.message}</S.ErrorMessage>}
@@ -70,7 +78,6 @@ export function NewTransactionModal({ onClose }: NewTransactionModalProps) {
               <input
               type="number"
               placeholder="Preço"
-              required
               {...register('price', { valueAsNumber: true })}
             />
             {errors.price && <S.ErrorMessage>{errors.price.message}</S.ErrorMessage>}
@@ -81,13 +88,12 @@ export function NewTransactionModal({ onClose }: NewTransactionModalProps) {
             <input
               type="text"
               placeholder="Categoria"
-              required
               {...register('category')}
             />
             {errors.category && <S.ErrorMessage>{errors.category.message}</S.ErrorMessage>}
           </S.Label>
 
-          <S.RecurrentContainer>
+          <S.RecurrentContainer contrast={contrast}>
             <span>Transação Recorrente?</span>
             <input
               type="checkbox"
@@ -115,12 +121,20 @@ export function NewTransactionModal({ onClose }: NewTransactionModalProps) {
             render={({ field }) => {
               return (
                 <S.TransactionType onValueChange={field.onChange} value={field.value}>
-                  <S.TransactionTypeButton variant="income" value="income" >
+                  <S.TransactionTypeButton 
+                    variant="income" 
+                    value="income" 
+                    contrast={contrast}
+                  >
                     <ArrowCircleUp size={24} />
                     Entrada
                   </S.TransactionTypeButton>
 
-                  <S.TransactionTypeButton variant="outcome" value="outcome" >
+                  <S.TransactionTypeButton 
+                    variant="outcome" 
+                    value="outcome" 
+                    contrast={contrast}
+                  >
                     <ArrowCircleDown size={24} />
                     Saída
                   </S.TransactionTypeButton>

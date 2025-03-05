@@ -17,6 +17,16 @@ export function SectionTransactions() {
   const [transactionToDelete, setTransactionToDelete] = useState<string | null>(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [transactionToEdit, setTransactionToEdit] = useState<Transaction | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
+
+  // Calcula o índice inicial e final dos itens da página atual
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentTransactions = transactions.slice(indexOfFirstItem, indexOfLastItem)
+  
+  // Calcula o total de páginas
+  const totalPages = Math.ceil(transactions.length / itemsPerPage)
 
   async function handleDeleteTransaction(id: string) {
     setTransactionToDelete(id)
@@ -33,6 +43,10 @@ export function SectionTransactions() {
     setIsEditModalOpen(false)
   }
 
+  function handlePageChange(pageNumber: number) {
+    setCurrentPage(pageNumber)
+  }
+  
   return (
     <S.ContainerTransactions>
       <DeleteConfirmation 
@@ -62,7 +76,7 @@ export function SectionTransactions() {
           </S.GridHeader>
 
           <S.TransactionsGrid currentTheme={currentTheme} contrast={contrast}>
-            {transactions.map((transaction) => {
+            {currentTransactions.map((transaction) => {
               return (
                 <S.TransactionRow
                   key={transaction.id}
@@ -127,6 +141,37 @@ export function SectionTransactions() {
           onClose={handleCloseEditModal}
           transaction={transactionToEdit}
         />
+      )}
+
+      {totalPages > 1 && (
+        <S.PaginationContainer>
+          <S.ScrollPageButton 
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            contrast={contrast}
+          >
+            Anterior
+          </S.ScrollPageButton>
+          
+          {Array.from({ length: totalPages }, (_, index) => (
+            <S.ScrollPageButton
+              key={index + 1}
+              onClick={() => handlePageChange(index + 1)}
+              isActive={currentPage === index + 1}
+              contrast={contrast}
+            >
+              {index + 1}
+            </S.ScrollPageButton>
+          ))}
+
+          <S.ScrollPageButton 
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            contrast={contrast}
+          >
+            Próximo
+          </S.ScrollPageButton>
+        </S.PaginationContainer>
       )}
     </S.ContainerTransactions>
   )
