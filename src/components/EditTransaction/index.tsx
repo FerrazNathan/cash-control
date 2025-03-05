@@ -7,6 +7,7 @@ import { Modal } from '../Modal'
 import { EditTransactionFormInputs } from '../../@types/transactionForm'
 
 import * as S from './styles'
+import { useTheme } from '../../hooks/useTheme'
 
 interface EditTransactionModalProps {
   isOpen: boolean
@@ -25,7 +26,8 @@ interface EditTransactionModalProps {
 
 export function EditTransaction({ isOpen, onClose, transaction }: EditTransactionModalProps) {
   const { updateTransaction } = useContext(TransactionsContext)
-  
+  const { currentTheme, contrast } = useTheme()
+
   const {
     control,
     register,
@@ -47,7 +49,11 @@ export function EditTransaction({ isOpen, onClose, transaction }: EditTransactio
       onClose={onClose}
       title="Editar transação"
     >
-      <S.FormContainer onSubmit={handleSubmit(handleEditTransaction)}>
+      <S.FormContainer 
+        currentTheme={currentTheme}
+        contrast={contrast}
+        onSubmit={handleSubmit(handleEditTransaction)}
+      >
         <S.Label>
           <span>Nome</span>
           <input 
@@ -97,26 +103,35 @@ export function EditTransaction({ isOpen, onClose, transaction }: EditTransactio
           defaultValue={transaction.type}
           render={({ field }) => (
             <S.TransactionType onValueChange={field.onChange} value={field.value}>
-              <S.TransactionTypeButton variant="income" value="income">
+              <S.TransactionTypeButton 
+                variant="income" 
+                value="income" 
+                contrast={contrast}
+                currentTheme={currentTheme}
+              >
                 <ArrowCircleUp size={24} />
                 Entrada
               </S.TransactionTypeButton>
-              <S.TransactionTypeButton variant="outcome" value="outcome">
+              <S.TransactionTypeButton 
+                variant="outcome" 
+                value="outcome" 
+                contrast={contrast} 
+                currentTheme={currentTheme}
+              >
                 <ArrowCircleDown size={24} />
                 Saída
               </S.TransactionTypeButton>
             </S.TransactionType>
           )}
         />
-
-        <S.Label>
-          <span>Recorrente</span>
+        <S.RecurrentContainer contrast={contrast}>
+          <span>Transação Recorrente?</span>
           <input
             type="checkbox"
             defaultChecked={transaction.isRecurrent}
             {...register('isRecurrent')}
           />
-        </S.Label>
+        </S.RecurrentContainer>
 
         {isRecurrent && (
           <S.Label>

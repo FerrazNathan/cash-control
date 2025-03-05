@@ -9,6 +9,11 @@ interface TransactionsGridProps {
   contrast: boolean
 }
 
+interface ScrollPageButtonProps {
+  isActive?: boolean
+  contrast: boolean
+}
+
 export const ContainerTransactions = styled.main`
   width: 100%;
   max-width: 1200px;
@@ -133,4 +138,32 @@ export const ActionButtons = styled.div`
 
 export const PriceHighlight = styled.span<PriceHighlightProps>`
   color: ${(props) => props.variant === "income" ? props.theme.success.medium : props.theme.error.light}
+`
+
+export const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+`
+
+export const ScrollPageButton = styled.button<ScrollPageButtonProps>`
+  ${({ theme, contrast, isActive }) => css`
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background: ${contrast ? theme.contrast.highlight : isActive ? theme.success.light : theme.surface.standard};
+    color: ${contrast ? theme.contrast.dark : theme.text.standard};
+    cursor: pointer;
+    transition: filter 0.2s;
+
+    &:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
+      filter: brightness(0.9);
+    }
+  `})
 `

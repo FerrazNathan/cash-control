@@ -1,49 +1,59 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import * as RadioGroup from '@radix-ui/react-radio-group'
 
-interface TransactionTypeButtonProps {
+interface FormContainerProps {
+  currentTheme?: string
+  contrast: boolean
+}
+
+interface TransactionTypeButtonProps extends FormContainerProps {
   variant: 'income' | 'outcome';
 }
 
-export const FormContainer = styled.form`
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+export const FormContainer = styled.form<FormContainerProps>`
+  ${({ theme, contrast, currentTheme }) => css`
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;    
 
-  input {
-    border-radius: 6px;
-    border: 0;
-    background: ${props => props.theme.background.standard};
-    color: ${props => props.theme.text.light};
-    padding: 1rem;
+    input {
+      border-radius: 6px;
+      border: 0;
+      background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.background.standard : theme.surface.light};
+      color: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.text.light : theme.text.standard};
+      border: 1px solid ${contrast ? theme.contrast.highlight : theme.surface.standard};
+      padding: 1rem;
+      outline: 0;
+      cursor: pointer;
 
-    &::placeholder {
-      color: ${props => props.theme.surface.standard};
+      &::placeholder {
+        color: ${currentTheme === 'dark' ? theme.surface.standard : theme.text.standard};
+      }
     }
-  }
 
-  button[type="submit"] {
-    height: 58px;
-    border: 0;
-    background: ${props => props.theme.success.light};
-    color: ${props => props.theme.white};
-    font-weight: bold;
-    padding: 0 1.25rem;
-    border-radius: 8px;
-    margin-top: 1.5rem;
-    cursor: pointer;
+    button[type="submit"] {
+      height: 58px;
+      border: 0;
+      background: ${contrast ? theme.contrast.highlight : theme.success.light};
+      color: ${contrast ? theme.contrast.dark : theme.white};
+      font-weight: bold;
+      padding: 0 1.25rem;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+      cursor: pointer;
 
-    &:not(:disabled):hover {
-      background: ${props => props.theme.success.standard};
-      transition: background-color 0.2s;
-    }    
+      &:not(:disabled):hover {
+        background: ${contrast ? theme.contrast.highlight : theme.success.standard};
+        transition: background-color 0.2s;
+      }    
 
-    &:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
     }
-  }
+  `}
 `
 
 export const TransactionType = styled(RadioGroup.Root)`
@@ -54,35 +64,37 @@ export const TransactionType = styled(RadioGroup.Root)`
 `
 
 export const TransactionTypeButton = styled(RadioGroup.Item)<TransactionTypeButtonProps>`
-  background: ${props => props.theme.primary.medium};
-  border-radius: 8px;
-  border: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  color: ${props => props.theme.text.light};
-  padding: 1rem;
-
-  svg {
-    color: ${props => props.variant === 'income' ? props.theme.success.medium : props.theme.error.light};
-  }
-
-  &[data-state='checked'] {
-    color: ${props => props.theme.white};
-    background: ${props => props.variant === 'income' ? props.theme.success.light : props.theme.error.medium};
-    box-shadow: none;
+  ${({ theme, contrast, variant, currentTheme }) => css`
+    background: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.primary.medium : theme.surface.light};
+    border-radius: 8px;
+    border: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: ${contrast ? theme.contrast.dark : theme.white};
+    padding: 1rem;
 
     svg {
-      color: ${props => props.theme.white};
+      color: ${contrast ? theme.contrast.dark : variant === 'income' ? theme.success.medium : theme.error.light};
     }
-  }
 
-  &[data-state='unchecked']:hover {
-    transition: background-color 0.2s;
-    background: ${props => props.theme.primary.light};
-  }
+    &[data-state='checked'] {
+      color: ${contrast ? theme.contrast.dark : theme.white};
+      background: ${contrast ? theme.contrast.highlight : variant === 'income' ? theme.success.light : theme.error.medium};
+      box-shadow: none;
+
+      svg {
+        color: ${contrast ? theme.contrast.dark : theme.white};
+      }
+    }
+
+    &[data-state='unchecked']:hover {
+      transition: background-color 0.2s;
+      background: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.primary.light : theme.surface.light};
+    }
+  `}
 `
 
 export const Label = styled.label`
@@ -97,9 +109,48 @@ export const Label = styled.label`
   }
 `
 
-export const RecurrentContainer = styled.label`
-  display: flex;
-  gap: 0.5rem;
+export const RecurrentContainer = styled.label<FormContainerProps>`
+  ${({ theme, contrast }) => css`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    & span {
+      color: ${theme.surface.medium};
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    & input[type="checkbox"] {
+      appearance: none;
+      width: 1.25rem;
+      height: 1.25rem;
+      margin: 0;
+      padding: 0;
+      border: 2px solid ${contrast ? theme.contrast.highlight : theme.surface.medium};
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      
+      &:checked {
+        background: ${contrast ? theme.contrast.highlight : theme.primary.standard};
+
+        &::after {
+          content: '✓';
+          position: absolute;
+          color: ${contrast ? theme.contrast.dark : theme.white};
+          font-size: 0.875rem;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      &:hover {
+        border-color: ${contrast ? theme.yellow : theme.green};
+      }
+    }
+  `}
 `
 
 export const ErrorMessage = styled.div`
