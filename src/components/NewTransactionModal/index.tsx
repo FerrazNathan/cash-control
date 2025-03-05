@@ -4,10 +4,10 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
+import { useTheme } from '../../hooks/useTheme'
 import { z } from 'zod'
 
 import * as S from './styles'
-import { useTheme } from '../../hooks/useTheme'
 
 const newTransactionFormSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -48,11 +48,11 @@ export function NewTransactionModal({ onClose }: NewTransactionModalProps) {
     reset()
     onClose?.()
   }
-  
+  console.log(currentTheme)
   return (
     <Dialog.Portal> {/* Renderiza o conteúdo do modal no final do DOM (fora da hierarquia atual) para evitar problemas de z-index */}
       <S.Overlay /> {/* Camada escura de fundo que fica por trás do modal */}
-      <S.Content> {/* Container principal do conteúdo do modal */}
+      <S.Content contrast={contrast} currentTheme={currentTheme}> {/* Container principal do conteúdo do modal */}
         <Dialog.Title>Nova Transação</Dialog.Title> {/* Título do modal - importante para acessibilidade */}
         <S.CloseButton> {/* Botão de fechar o modal - pode ser personalizado com asChild também */}
           <X size={24} />
@@ -125,6 +125,7 @@ export function NewTransactionModal({ onClose }: NewTransactionModalProps) {
                     variant="income" 
                     value="income" 
                     contrast={contrast}
+                    currentTheme={currentTheme}
                   >
                     <ArrowCircleUp size={24} />
                     Entrada
@@ -134,6 +135,7 @@ export function NewTransactionModal({ onClose }: NewTransactionModalProps) {
                     variant="outcome" 
                     value="outcome" 
                     contrast={contrast}
+                    currentTheme={currentTheme}
                   >
                     <ArrowCircleDown size={24} />
                     Saída

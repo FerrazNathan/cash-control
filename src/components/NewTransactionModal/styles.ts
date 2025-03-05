@@ -20,20 +20,28 @@ export const Overlay = styled(Dialog.Overlay)`
   background: rgba(0, 0, 0, 0.75);
 `
 
-export const Content = styled(Dialog.Content)`
-  min-width: 32rem;
-  border-radius: 8px;
-  padding: 2.5rem 3rem;
-  background: ${props => props.theme.primary.standard};
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);  
+export const Content = styled(Dialog.Content)<FormContainerProps>`
+  ${({ theme, contrast, currentTheme }) => css`
+    border-radius: 8px;
+    padding: 2rem;
+    background: ${contrast ? theme.contrast.dark: currentTheme === 'dark' ? theme.primary.standard : theme.background.medium};
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  
+    width: 40%;
+		border: 1px solid ${contrast ? theme.contrast.standard : 'transparent'};
 
-  @media (max-width: 480px) {
-    min-width: 340px;
-    padding: 1rem;
-  }
+    h2 {
+      text-align: center;
+			color: ${theme.text.standard};
+    }
+
+    @media (max-width: 480px) {
+			min-width: 340px;
+			padding: 1rem;
+    }
+  `}
 `
 
 export const FormContainer = styled.form<FormContainerProps>`
@@ -102,7 +110,7 @@ export const TransactionType = styled(RadioGroup.Root)`
 
 export const TransactionTypeButton = styled(RadioGroup.Item)<TransactionTypeButtonProps>`
   ${({ theme, contrast, variant, currentTheme }) => css`
-    background: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.primary.medium : theme.surface.light};
+    background: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.primary.light : theme.surface.light};
     border-radius: 8px;
     border: 0;
     display: flex;
