@@ -7,7 +7,7 @@ interface HeaderContainerProps {
 export const HeaderContainer = styled.header<HeaderContainerProps>`
   ${({ theme, contrast }) => css`
     background: ${contrast ? theme.contrast.dark : theme.background.standard};
-    padding: 0.5rem 0 7.5rem;
+    padding: 0.5rem 0 2rem;
     border-bottom: 1px solid ${contrast ? theme.contrast.standard : 'transparent'};
   `}
 `

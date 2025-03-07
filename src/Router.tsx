@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { SignIn } from './pages/SignIn/index'
 import { Register } from './pages/Register/index'
 import { Transactions } from './pages/Transactions'
+import { History } from './pages/History'
 import { useAuth } from './hooks/useAuth'
 import { DefaultLayout } from './layouts/DefaultLayout'
 
@@ -30,6 +31,14 @@ export function Router() {
           element={
             <PrivateRoute>
               <Transactions />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/history" 
+          element={
+            <PrivateRoute>
+              <History />
             </PrivateRoute>
           } 
         />

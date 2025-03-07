@@ -14,7 +14,7 @@ export const ContainerSummary = styled.section`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  margin-top: -5rem;
+  margin-top: 2rem;
 
   @media (max-width: 768px) {
     gap: 1rem;

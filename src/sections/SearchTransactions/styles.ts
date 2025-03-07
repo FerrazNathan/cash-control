@@ -10,7 +10,7 @@ export const SearchTransactionsContainer = styled.form`
   display: flex;
   gap: 1rem;
   overflow: hidden;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
 `
 
 export const InputSearch = styled.input<InputSearchProps>`
