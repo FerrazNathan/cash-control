@@ -16,7 +16,7 @@ export const Container = styled.section<TransactionHistoryProps>`
     gap: 2rem;
 
     h2 {
-      color: ${contrast ? theme.contrast.standard : theme.text.standard};
+      color: ${contrast ? theme.contrast.standard : currentTheme === 'dark' ? theme.text.light : theme.text.standard};
     }
   `}
 `    

@@ -10,7 +10,6 @@ import {
   doc,
   updateDoc,
   orderBy,
-  or
 } from 'firebase/firestore';
 import { db } from "../lib/firebase";
 import { useAuth } from "../hooks/useAuth";
@@ -53,7 +52,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     if (!user) return
 
     try {
-      let transactionsQuery = query(
+      const transactionsQuery = query(
         collection(db, 'transactions'),
         where('userId', '==', user.id),
         orderBy('createdAt', 'desc')
