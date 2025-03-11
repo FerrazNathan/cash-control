@@ -1,18 +1,8 @@
 import { useContext, useState, useEffect } from 'react'
-import { MagnifyingGlass } from 'phosphor-react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { useTheme } from '../../hooks/useTheme'
-import { z } from 'zod'
 
 import * as S from './styles'
-
-const searchFormSchema = z.object({
-  query: z.string(),
-})
-
-type SearchFormInputs = z.infer<typeof searchFormSchema>
 
 export function SearchTransactions() {
   const { getTransactions } = useContext(TransactionsContext)

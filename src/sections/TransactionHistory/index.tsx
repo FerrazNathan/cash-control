@@ -1,7 +1,3 @@
-import { useState } from 'react'
-import { useContext } from 'react'
-import { TransactionsContext } from '../../contexts/TransactionsContext'
-import { dateFormatter, priceFormatter } from '../../utils/formatter'
 import { useTheme } from '../../hooks/useTheme'
 
 import * as S from './styles'
