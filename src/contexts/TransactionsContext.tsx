@@ -9,6 +9,8 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  orderBy,
+  or
 } from 'firebase/firestore';
 import { db } from "../lib/firebase";
 import { useAuth } from "../hooks/useAuth";
@@ -17,13 +19,24 @@ import {
   EditTransactionFormInputs, 
   Transaction 
 } from "../@types/transactionForm";
+import { Timestamp } from 'firebase/firestore';
 
 interface TransactionsContextType {
   transactions: Transaction[]
-  getTransactions: (query?: string) => Promise<void>
+  getTransactions: (filters: TransactionFilters) => Promise<void>
   createTransaction: (data: TransactionFormInputs) => Promise<void>
   deleteTransaction: (id: string) => Promise<void>
   updateTransaction: (id: string, data: EditTransactionFormInputs) => Promise<void>
+}
+
+interface TransactionFilters {
+  query?: string
+  month?: string
+  type?: 'all' | 'income' | 'outcome'
+  priceRange?: {
+    min?: number
+    max?: number
+  }
 }
 
 interface TransactionsProviderProps {
@@ -36,46 +49,82 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const { user } = useAuth()
   
-  const getTransactions = useCallback(async (searchQuery?: string) => {
-    if (!user) {
-      return;
-    }
+  const getTransactions = useCallback(async (filters: TransactionFilters = {}) => {
+    if (!user) return
 
-    try {      
-      const transactionsRef = collection(db, 'transactions');      
-      // Query básica primeiro, sem orderBy
-      const q = query(
-        transactionsRef,
-        where('userId', '==', user.id)
-      );
+    try {
+      let transactionsQuery = query(
+        collection(db, 'transactions'),
+        where('userId', '==', user.id),
+        orderBy('createdAt', 'desc')
+      )
 
-      const querySnapshot = await getDocs(q);
+      // Busca por texto deve ser feita após receber os dados
+      const response = await getDocs(transactionsQuery)
+      let fetchedTransactions = response.docs.map(doc => {
+        const data = doc.data()
+        const createdAt = data.createdAt instanceof Timestamp 
+          ? data.createdAt.toDate().toISOString()
+          : typeof data.createdAt === 'string' 
+            ? data.createdAt 
+            : new Date().toISOString()
 
-      let transactionsData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate?.()?.toISOString() || new Date().toISOString()
-      })) as Transaction[];
+        return {
+          id: doc.id,
+          ...data,
+          createdAt
+        }
+      }) as Transaction[]
 
-      // Ordenar localmente por enquanto
-      transactionsData.sort((a, b) => 
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-
-      // Aplicar filtro de busca
-      if (searchQuery) {
-        const searchLower = searchQuery.toLowerCase().trim();
-        transactionsData = transactionsData.filter(transaction => 
-          transaction.name.toLowerCase().includes(searchLower) ||
-          transaction.category.toLowerCase().includes(searchLower)
-        );
+      // Aplicar filtros
+      if (filters.query) {
+        const searchTerm = filters.query.toLowerCase()
+        fetchedTransactions = fetchedTransactions.filter(transaction => 
+          transaction.name.toLowerCase().includes(searchTerm) ||
+          transaction.category.toLowerCase().includes(searchTerm)
+        )
       }
 
-      setTransactions(transactionsData);
+      // Filtros adicionais
+      let filteredTransactions = fetchedTransactions
+
+      if (filters.month) {
+        filteredTransactions = filteredTransactions.filter(transaction => {
+          try {
+            const transactionDate = new Date(transaction.createdAt)
+            const transactionMonth = `${transactionDate.getFullYear()}-${String(transactionDate.getMonth() + 1).padStart(2, '0')}`
+            return transactionMonth === filters.month
+          } catch {
+            return false
+          }
+        })
+      }
+
+      if (filters.type && filters.type !== 'all') {
+        filteredTransactions = filteredTransactions.filter(
+          transaction => transaction.type === filters.type
+        )
+      }
+
+      if (filters.priceRange) {
+        if (filters.priceRange.min !== undefined) {
+          filteredTransactions = filteredTransactions.filter(
+            transaction => transaction.price >= filters.priceRange!.min!
+          )
+        }
+        if (filters.priceRange.max !== undefined) {
+          filteredTransactions = filteredTransactions.filter(
+            transaction => transaction.price <= filters.priceRange!.max!
+          )
+        }
+      }
+
+      setTransactions(filteredTransactions)
     } catch (error) {
-      console.error('Erro ao buscar transações:', error);
+      console.error('Erro ao buscar transações:', error)
+      throw new Error('Erro ao buscar transações')
     }
-  }, [user]);
+  }, [user])
   
   const createTransaction = useCallback(async (data: TransactionFormInputs) => {
     if (!user) return;
