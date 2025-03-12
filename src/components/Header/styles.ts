@@ -38,7 +38,7 @@ export const HeaderContent = styled.div`
 
 export const ContainerLogo = styled.h1`
   font-size: 1.5rem;
-  color: ${(props) => props.theme.surface.standard};
+  color: ${(props) => props.theme.white};
   display: flex;
   align-items: center;
   gap: 1rem;

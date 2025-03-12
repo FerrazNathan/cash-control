@@ -16,6 +16,12 @@ export function SearchTransactions() {
   const [priceRange, setPriceRange] = useState({ min: '', max: '' })
   const [searchTerm, setSearchTerm] = useState('')
 
+  const hasActiveFilters = selectedType !== 'all' || 
+    priceRange.min !== '' || 
+    priceRange.max !== '' || 
+    searchTerm !== '' ||
+    selectedMonth !== `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`
+
   const handleClearFilters = () => {
     setSelectedMonth(() => {
       const today = new Date()
@@ -111,15 +117,18 @@ export function SearchTransactions() {
           </S.PriceInputs>
         </S.FilterGroup>
       </S.ContainerSearchMounthTypeAndPrice>
-      <S.ContainerButtonClearFilters>
-        <S.ClearFiltersButton
-          type="button"
-          onClick={handleClearFilters}
-          contrast={contrast}
-        >
-          Limpar Filtros
-        </S.ClearFiltersButton>
-      </S.ContainerButtonClearFilters>
+
+      {hasActiveFilters && (
+        <S.ContainerButtonClearFilters>
+          <S.ClearFiltersButton
+            type="button"
+            onClick={handleClearFilters}
+            contrast={contrast}
+          >
+            Limpar Filtros
+          </S.ClearFiltersButton>
+          </S.ContainerButtonClearFilters>
+      )}
     </S.FiltersContainer>
   )
 }

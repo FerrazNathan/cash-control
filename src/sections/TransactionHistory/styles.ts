@@ -20,3 +20,11 @@ export const Container = styled.section<TransactionHistoryProps>`
     }
   `}
 `    
+
+export const CardsGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`
+
+

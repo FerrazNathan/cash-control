@@ -48,7 +48,7 @@ export function NewTransactionModal({ onClose }: NewTransactionModalProps) {
     reset()
     onClose?.()
   }
-  console.log(currentTheme)
+  
   return (
     <Dialog.Portal> {/* Renderiza o conteúdo do modal no final do DOM (fora da hierarquia atual) para evitar problemas de z-index */}
       <S.Overlay /> {/* Camada escura de fundo que fica por trás do modal */}
