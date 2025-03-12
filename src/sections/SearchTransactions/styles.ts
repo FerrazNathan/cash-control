@@ -71,7 +71,7 @@ export const SelectComponent = styled.select<InputSearchProps>`
   ${({ theme, contrast, currentTheme }) => css`
     padding: 1rem;
     cursor: pointer;
-    padding: 1rem;
+    padding: 1.125rem;
     border-radius: 8px;
     border: 1px solid ${contrast ? theme.contrast.highlight : theme.surface.light};
     background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.background.standard : theme.background.medium};
