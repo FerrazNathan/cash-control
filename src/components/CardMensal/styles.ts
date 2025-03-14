@@ -21,8 +21,8 @@ export const ContainerCardMensal = styled.div<ContainerCardMensalProps>`
 		border-radius: 8px;
 		padding: 1rem;
 		width: 100%;
-		max-width: 250px;
-		gap: 1rem;
+		max-width: 300px;
+		gap: 0.5rem;
 	`}
 `
 
@@ -40,7 +40,7 @@ export const ShowTransactions = styled.div<ShowTransactionsProps>`
 		border: 1px solid ${contrast ? theme.contrast.standard : 'transparent'};
 		color: ${theme.white};
 		border-radius: 8px;
-		padding: 1rem;
+		padding: 0.5rem 1rem;
 		width: 100%;
 		max-width: 250px;
 	`}

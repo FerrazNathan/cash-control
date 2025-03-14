@@ -1,19 +1,25 @@
-import { useContext, useMemo } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
 import { CardMensal } from '../../components/CardMensal'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
+import { TransactionsChart } from '../../components/TransactionsChart'
 
 import * as S from './styles'
 
 export function TransactionHistory() {
 	const { transactions } = useContext(TransactionsContext)
 	const { contrast, currentTheme } = useTheme()
+	const [selectedMonth, setSelectedMonth] = useState(() => {
+		const today = new Date()
+		return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`
+	})
 
+	// Dados para os cards mensais
 	const monthlyData = useMemo(() => {
 		const grouped = transactions.reduce((acc, transaction) => {
 			const date = new Date(transaction.createdAt)
 			const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
-			
+
 			if (!acc[monthKey]) {
 				acc[monthKey] = {
 					income: 0,
@@ -35,19 +41,45 @@ export function TransactionHistory() {
 			.sort(([a], [b]) => b.localeCompare(a))
 	}, [transactions])
 
+	// Dados para o gráfico do mês selecionado
+	const chartData = useMemo(() => {
+		const monthTransactions = transactions.filter(transaction => {
+			const transactionDate = new Date(transaction.createdAt)
+			const transactionMonth = `${transactionDate.getFullYear()}-${String(transactionDate.getMonth() + 1).padStart(2, '0')}`
+			return transactionMonth === selectedMonth
+		})
+
+		const dailyData = monthTransactions.reduce((acc, transaction) => {
+			const day = new Date(transaction.createdAt).getDate()
+
+			if (!acc[day]) {
+				acc[day] = { day, income: 0, outcome: 0 }
+			}
+
+			if (transaction.type === 'income') {
+				acc[day].income += transaction.price
+			} else {
+				acc[day].outcome += transaction.price
+			}
+
+			return acc
+		}, {} as Record<number, { day: number; income: number; outcome: number }>)
+
+		return Object.values(dailyData).sort((a, b) => a.day - b.day)
+	}, [transactions, selectedMonth])
+
 	const handleDetailsClick = (month: string) => {
-		// Aqui você pode implementar a lógica para mostrar o gráfico
-		console.log(`Mostrar detalhes de ${month}`)
+		setSelectedMonth(month)
 	}
-	
+
 	return (
 		<S.Container contrast={contrast} currentTheme={currentTheme}>
 			<h2>Histórico de Transações</h2>
 
-			{monthlyData.length && (
+			<S.ContainerCardsChart>
 				<S.CardsGrid>
 					{monthlyData.map(([month, data]) => (
-						<CardMensal 
+						<CardMensal
 							key={month}
 							title={data.title}
 							income={data.income}
@@ -56,7 +88,13 @@ export function TransactionHistory() {
 						/>
 					))}
 				</S.CardsGrid>
-			)}
+				<S.ContainerChart>
+					<TransactionsChart
+						month={selectedMonth}
+						transactions={chartData}
+						/>
+				</S.ContainerChart>
+			</S.ContainerCardsChart>
 		</S.Container>
 	)
 } 

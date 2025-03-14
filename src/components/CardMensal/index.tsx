@@ -43,7 +43,7 @@ export function CardMensal({
 				type="button"
 				contrast={contrast}
 				currentTheme={currentTheme}
-				onClick={() => { onDetailsClick }}
+				onClick={onDetailsClick}
 			>
 				Ver detalhes
 			</S.ButtonDetails>
