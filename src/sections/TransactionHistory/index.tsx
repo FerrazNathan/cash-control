@@ -133,6 +133,7 @@ export function TransactionHistory() {
 					<option value="yearly">Anual</option>
 				</S.SelectComponent>
 			</S.Label>
+			
 			<S.ContainerCardsChart>
 				<S.CardsGrid>
 					{Object.entries(periodData)

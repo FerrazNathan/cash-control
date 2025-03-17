@@ -25,19 +25,21 @@ export function CardMensal({
 				</S.TitleCardMensal>
 			)}
 
-			{income && (
-				<S.ShowTransactions type="income" contrast={contrast}>
-					<h3>Entradas</h3>
-					<p>{priceFormatter.format(income)}</p>
-				</S.ShowTransactions>
-			)}
+			<S.ContainerTransactionsBalnace>
+				{income && (
+					<S.ShowTransactions type="income" contrast={contrast}>
+						<h3>Entradas</h3>
+						<p>{priceFormatter.format(income)}</p>
+					</S.ShowTransactions>
+				)}
 
-			{outcome && (
-				<S.ShowTransactions type="outcome" contrast={contrast}>
-					<h3>Saídas</h3>
-					<p>{priceFormatter.format(outcome)}</p>
-				</S.ShowTransactions>
-			)}
+				{outcome && (
+					<S.ShowTransactions type="outcome" contrast={contrast}>
+						<h3>Saídas</h3>
+						<p>{priceFormatter.format(outcome)}</p>
+					</S.ShowTransactions>
+				)}
+			</S.ContainerTransactionsBalnace>
 
 			<S.ButtonDetails
 				type="button"

@@ -26,6 +26,19 @@ export const ContainerCardMensal = styled.div<ContainerCardMensalProps>`
 	`}
 `
 
+export const ContainerTransactionsBalnace = styled.div`
+	display: flex;
+	justify-content: space-between;
+	gap: 0.5rem;
+	width: 100%;
+
+	@media (max-width: 768px) {
+		flex-direction: column;
+		align-items: center;
+		min-width: 160px;
+	}
+`
+
 export const TitleCardMensal = styled.h3`
 	${({ theme }) => css`
 		font-weight: 700;
@@ -42,7 +55,6 @@ export const ShowTransactions = styled.div<ShowTransactionsProps>`
 		border-radius: 8px;
 		padding: 0.5rem 1rem;
 		width: 100%;
-		max-width: 250px;
 	`}
 `
 
@@ -56,7 +68,6 @@ export const ButtonDetails = styled.button<ContainerCardMensalProps>`
 		cursor: pointer;
 		padding: 1rem;
 		width: 100%;
-		max-width: 250px;
 		transition: background 0.3s ease;
 
 		&:hover {
