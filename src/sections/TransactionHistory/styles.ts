@@ -14,13 +14,17 @@ export const Container = styled.section<TransactionHistoryProps>`
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    padding: 2rem 0;
+    padding: 2rem 1rem;
 
     h2 {
       color: ${contrast ? theme.contrast.standard : currentTheme === 'dark' ? theme.text.light : theme.text.standard};
       text-align: center;
       font-size: 2rem;
       font-weight: 600;
+
+      @media (max-width: 768px) {
+        font-size: 1.5rem;
+      }
     }
   `}
 `    
@@ -29,6 +33,11 @@ export const ContainerCardsChart = styled.div`
   display: flex;
   gap: 2rem;
   width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 export const CardsGrid = styled.div`
@@ -37,6 +46,21 @@ export const CardsGrid = styled.div`
   gap: 1rem;
   width: 100%;
   max-width: 300px;
+  max-height: 525px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+    max-width: 100%;
+  }
 `
 
 export const ContainerChart = styled.div`
