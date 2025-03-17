@@ -1,36 +1,22 @@
 import { useMemo } from 'react'
 import { Bar, BarChart, CartesianGrid, XAxis, ResponsiveContainer, Tooltip } from "recharts"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { ChartConfig, ChartContainer, ChartTooltipContent } from "../ui/chart"
 import { useTheme } from '../../hooks/useTheme'
 
 interface TransactionsChartProps {
-  month: string
-  transactions: {
-    day: number
+  period: string
+  data: Array<{
+    day?: number
+    month?: string
     income: number
     outcome: number
-  }[]
+  }>
+  viewMode: 'monthly' | 'yearly'
 }
 
-export function TransactionsChart({ month, transactions }: TransactionsChartProps) {
+export function TransactionsChart({ period, data, viewMode }: TransactionsChartProps) {
 	const { contrast, currentTheme } = useTheme()
-  const [year, monthNum] = month.split('-')
-  const daysInMonth = new Date(Number(year), Number(monthNum), 0).getDate()
-  
-  const chartData = useMemo(() => {
-    return Array.from({ length: daysInMonth }).map((_, index) => {
-      const day = index + 1
-      const dayTransactions = transactions.find(t => t.day === day) || { income: 0, outcome: 0 }
-      
-      return {
-        day,
-        income: dayTransactions.income,
-        outcome: dayTransactions.outcome
-      }
-    })
-  }, [daysInMonth, transactions])
-
   const chartConfig: ChartConfig = {
     income: {
       label: "Entradas",
@@ -42,22 +28,26 @@ export function TransactionsChart({ month, transactions }: TransactionsChartProp
     }
   }
 
-  const monthDate = new Date(Number(year), Number(monthNum) - 1)
-  const monthTitle = monthDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' })
+  const title = useMemo(() => {
+    if (viewMode === 'monthly') {
+      const [year, month] = period.split('-')
+      return new Date(Number(year), Number(month) - 1).toLocaleString('pt-BR', { month: 'long', year: 'numeric' })
+    }
+    return `Ano ${period}`
+  }, [period, viewMode])
 
   return (
     <Card contrast={contrast} currentTheme={currentTheme}>
       <CardHeader>
-        <CardTitle contrast={contrast} currentTheme={currentTheme}>Transações do Mês</CardTitle>
-        <CardDescription contrast={contrast} currentTheme={currentTheme}>{monthTitle}</CardDescription>
+        <CardTitle contrast={contrast} currentTheme={currentTheme}>Transações - {title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer>
           <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={chartData}>
+            <BarChart data={data}>
               <CartesianGrid vertical={false} />
               <XAxis
-                dataKey="day"
+                dataKey={viewMode === 'monthly' ? 'day' : 'month'}
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
