@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { SearchTransactions } from '../SearchTransactions'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { dateFormatter, priceFormatter } from '../../utils/formatter'
@@ -47,6 +47,8 @@ export function SectionTransactions() {
     setCurrentPage(pageNumber)
   }
   
+  console.log(transactions, 'transactions')
+  
   return (
     <S.ContainerTransactions>
       <DeleteConfirmation 
@@ -64,16 +66,17 @@ export function SectionTransactions() {
         }}
       />
 
-      <SearchTransactions />
       {transactions && transactions.length > 0 && (
-        <S.ContainerMainGridTransactions>
-          <S.GridHeader contrast={contrast} currentTheme={currentTheme}>
-            <span>Nome</span>
-            <span>Preço</span>
-            <span>Categoria</span>
-            <span>Data</span>
-            <span>Ações</span>
-          </S.GridHeader>
+        <React.Fragment>
+          <SearchTransactions />
+          <S.ContainerMainGridTransactions>
+            <S.GridHeader contrast={contrast} currentTheme={currentTheme}>
+              <span>Nome</span>
+              <span>Preço</span>
+              <span>Categoria</span>
+              <span>Data</span>
+              <span>Ações</span>
+            </S.GridHeader>
 
           <S.TransactionsGrid currentTheme={currentTheme} contrast={contrast}>
             {currentTransactions.map((transaction) => {
@@ -132,7 +135,8 @@ export function SectionTransactions() {
               )
             })}
           </S.TransactionsGrid>
-        </S.ContainerMainGridTransactions>
+          </S.ContainerMainGridTransactions>
+        </React.Fragment>
       )}
 
       {transactionToEdit && (

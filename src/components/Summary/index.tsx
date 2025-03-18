@@ -9,7 +9,7 @@ export function Summary() {
   const summary = useSummary()
   const { contrast } = useTheme()
 
-  const balanceCheck = summary.total > 0 ? 'positive' : 'negative'
+  const balanceCheck = summary.total >= 0 ? 'positive' : 'negative'
 
   return (
     <S.ContainerSummary>

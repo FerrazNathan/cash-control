@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState, useEffect } from 'react'
+import React, { useContext, useMemo, useState, useEffect } from 'react'
 import { useTheme } from '../../hooks/useTheme'
 import { CardMensal } from '../../components/CardMensal'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
@@ -121,10 +121,11 @@ export function TransactionHistory() {
 	return (
 		<S.Container contrast={contrast} currentTheme={currentTheme}>
 			<h2>Histórico de Transações</h2>
-
-			<S.Label contrast={contrast}>
-				<span>Alternar Visualização</span>
-				<S.SelectComponent
+			{transactions && transactions.length > 0 && (
+				<React.Fragment>
+					<S.Label contrast={contrast}>
+						<span>Alternar Visualização</span>
+						<S.SelectComponent
 					contrast={contrast}
 					value={viewMode}
 					onChange={(e) => setViewMode(e.target.value as ViewMode)}
@@ -154,8 +155,10 @@ export function TransactionHistory() {
 						data={chartData}
 						viewMode={viewMode}
 					/>			
-				</S.ContainerChart>	
-			</S.ContainerCardsChart>
+					</S.ContainerChart>	
+				</S.ContainerCardsChart>
+			</React.Fragment>
+			)}
 		</S.Container>
 	)
 } 
