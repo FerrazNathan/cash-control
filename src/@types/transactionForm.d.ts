@@ -27,4 +27,5 @@ export interface Transaction {
 	type: 'income' | 'outcome'
 	isRecurrent: boolean
 	recurrentMonths: number
+	currentInstallment?: number
 }

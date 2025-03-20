@@ -106,6 +106,8 @@ export const TransactionRow = styled.div<TransactionsGridProps>`
     background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.primary.medium : theme.surface.standard};
     border: 1px solid ${contrast ? theme.contrast.standard : 'transparent'};
     border-radius: 8px;
+    position: relative;
+    width: 100%;
 
     @media (max-width: 768px) {
       display: flex;
@@ -166,4 +168,26 @@ export const ScrollPageButton = styled.button<ScrollPageButtonProps>`
       filter: brightness(0.9);
     }
   `})
+`
+
+export const RecurrentBadge = styled.span`
+  position: absolute;
+  left: 14%;
+  top: 10%;
+  transform: translateY(-50%);
+  background: red;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: center;
+  max-width: 150px;
+
+  @media (max-width: 768px) {
+    left: inherit;
+    right: 2%;
+    top: 3%;
+  }
 `

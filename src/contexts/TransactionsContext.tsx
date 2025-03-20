@@ -130,29 +130,63 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
 
     try {
       const transactionsRef = collection(db, 'transactions');
-      const newTransaction = {
+      const transactions: Transaction[] = [];
+
+      // Pega a data atual para base
+      const baseDate = new Date();
+      
+      // Cria a transação base (primeira parcela)
+      const baseTransaction = {
         name: data.name,
         price: data.price,
         category: data.category,
         type: data.type,
-        createdAt: serverTimestamp(),
         userId: user.id,
         isRecurrent: data.isRecurrent,
-        recurrentMonths: data.isRecurrent ? data.recurrentMonths || 1 : 0
+        recurrentMonths: data.isRecurrent ? data.recurrentMonths || 1 : 0,
+        currentInstallment: 1, // Primeira parcela
+        createdAt: Timestamp.fromDate(baseDate)
       };
 
-      const docRef = await addDoc(transactionsRef, newTransaction);
-      
-      setTransactions(state => [{
+      // Adiciona a transação original
+      const docRef = await addDoc(transactionsRef, baseTransaction);
+      transactions.push({
         id: docRef.id,
-        ...newTransaction,
-        createdAt: new Date().toISOString()
-      }, ...state]);
+        ...baseTransaction,
+        createdAt: baseDate.toISOString()
+      });
+
+      // Se for recorrente, cria as transações futuras
+      if (data.isRecurrent && data.recurrentMonths) {
+        for (let i = 1; i < data.recurrentMonths; i++) {
+          // Cria uma nova data para cada mês subsequente
+          const nextDate = new Date(baseDate);
+          nextDate.setMonth(baseDate.getMonth() + i);
+          // Mantém o mesmo dia do mês
+          nextDate.setDate(baseDate.getDate());
+
+          const recurrentTransaction = {
+            ...baseTransaction,
+            currentInstallment: i + 1, // Incrementa o número da parcela
+            createdAt: Timestamp.fromDate(nextDate)
+          };
+
+          const recurrentDocRef = await addDoc(transactionsRef, recurrentTransaction);
+          transactions.push({
+            id: recurrentDocRef.id,
+            ...recurrentTransaction,
+            createdAt: nextDate.toISOString()
+          });
+        }
+      }
+
+      // Atualiza o estado com todas as transações
+      setTransactions(state => [...transactions, ...state]);
     } catch (error) {
       console.error('Erro ao criar transação:', error);
       throw new Error('Erro ao criar transação');
     }
-  }, [user])
+  }, [user]);
 
   const deleteTransaction = async (id: string) => {
     try {
