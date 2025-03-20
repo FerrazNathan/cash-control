@@ -24,7 +24,7 @@ export function SectionTransactions() {
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentTransactions = transactions.slice(indexOfFirstItem, indexOfLastItem)
-  
+
   // Calcula o total de páginas
   const totalPages = Math.ceil(transactions.length / itemsPerPage)
 
@@ -46,12 +46,10 @@ export function SectionTransactions() {
   function handlePageChange(pageNumber: number) {
     setCurrentPage(pageNumber)
   }
-  
-  console.log(transactions, 'transactions')
-  
+
   return (
     <S.ContainerTransactions>
-      <DeleteConfirmation 
+      <DeleteConfirmation
         isOpen={isDeleteModalOpen}
         onClose={() => {
           setIsDeleteModalOpen(false)
@@ -66,9 +64,10 @@ export function SectionTransactions() {
         }}
       />
 
+      <SearchTransactions />
+
       {transactions && transactions.length > 0 && (
         <React.Fragment>
-          <SearchTransactions />
           <S.ContainerMainGridTransactions>
             <S.GridHeader contrast={contrast} currentTheme={currentTheme}>
               <span>Nome</span>
@@ -78,63 +77,69 @@ export function SectionTransactions() {
               <span>Ações</span>
             </S.GridHeader>
 
-          <S.TransactionsGrid currentTheme={currentTheme} contrast={contrast}>
-            {currentTransactions.map((transaction) => {
-              return (
-                <S.TransactionRow
-                  key={transaction.id}
-                  currentTheme={currentTheme}
-                  contrast={contrast}
-                >
-                  <S.ContainerCardTransctions>
-                    <strong>Nome: </strong>
-                    <span data-label="Nome">
-                      {transaction.name}
-                    </span>
-                  </S.ContainerCardTransctions>
+            <S.TransactionsGrid currentTheme={currentTheme} contrast={contrast}>
+              {currentTransactions.map((transaction) => {
+                return (
+                  <S.TransactionRow
+                    key={transaction.id}
+                    currentTheme={currentTheme}
+                    contrast={contrast}
+                  >
+                    <S.ContainerCardTransctions>
+                      <strong>Nome: </strong>
+                      <span data-label="Nome">
+                        {transaction.name}
+                      </span>
+                    </S.ContainerCardTransctions>
 
-                  <S.ContainerCardTransctions>
-                    <strong>Preço:</strong>
-                    <span data-label="Preço">
-                      <S.PriceHighlight variant={transaction.type}>
-                        {transaction.type === 'outcome' && '- '}
-                        {priceFormatter.format(transaction.price)}
-                      </S.PriceHighlight>
-                    </span>
-                  </S.ContainerCardTransctions>
+                    {transaction.isRecurrent && (
+                      <S.RecurrentBadge>
+                        Parcela {transaction.currentInstallment} de {transaction.recurrentMonths}
+                      </S.RecurrentBadge>
+                    )}
 
-                  <S.ContainerCardTransctions>
-                    <strong>Categoria: </strong>
-                    <span data-label="Categoria">
-                      {transaction.category}
-                    </span>
-                  </S.ContainerCardTransctions>
+                    <S.ContainerCardTransctions>
+                      <strong>Preço:</strong>
+                      <span data-label="Preço">
+                        <S.PriceHighlight variant={transaction.type}>
+                          {transaction.type === 'outcome' && '- '}
+                          {priceFormatter.format(transaction.price)}
+                        </S.PriceHighlight>
+                      </span>
+                    </S.ContainerCardTransctions>
 
-                  <S.ContainerCardTransctions>
-                    <strong>Data: </strong>
-                    <span data-label="Data">
-                      {dateFormatter.format(new Date(transaction.createdAt))}
-                    </span>
-                  </S.ContainerCardTransctions>
+                    <S.ContainerCardTransctions>
+                      <strong>Categoria: </strong>
+                      <span data-label="Categoria">
+                        {transaction.category}
+                      </span>
+                    </S.ContainerCardTransctions>
 
-                  <S.ActionButtons>
-                    <button 
-                      title="Editar"
-                      onClick={() => handleOpenEditModal(transaction)}
-                    >
-                      <PencilSimpleLine size={20} color={contrast ? 'yellow' : 'green'} />
-                    </button>
-                    <button
-                      title="Excluir"
-                      onClick={() => handleDeleteTransaction(transaction.id)}
-                    >
-                      <Trash size={20} color={contrast ? 'yellow' : 'red'} />
-                    </button>
-                  </S.ActionButtons>
-                </S.TransactionRow>
-              )
-            })}
-          </S.TransactionsGrid>
+                    <S.ContainerCardTransctions>
+                      <strong>Data: </strong>
+                      <span data-label="Data">
+                        {dateFormatter.format(new Date(transaction.createdAt))}
+                      </span>
+                    </S.ContainerCardTransctions>
+
+                    <S.ActionButtons>
+                      <button
+                        title="Editar"
+                        onClick={() => handleOpenEditModal(transaction)}
+                      >
+                        <PencilSimpleLine size={20} color={contrast ? 'yellow' : 'green'} />
+                      </button>
+                      <button
+                        title="Excluir"
+                        onClick={() => handleDeleteTransaction(transaction.id)}
+                      >
+                        <Trash size={20} color={contrast ? 'yellow' : 'red'} />
+                      </button>
+                    </S.ActionButtons>
+                  </S.TransactionRow>
+                )
+              })}
+            </S.TransactionsGrid>
           </S.ContainerMainGridTransactions>
         </React.Fragment>
       )}
@@ -149,14 +154,14 @@ export function SectionTransactions() {
 
       {totalPages > 1 && (
         <S.PaginationContainer>
-          <S.ScrollPageButton 
+          <S.ScrollPageButton
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
             contrast={contrast}
           >
             Anterior
           </S.ScrollPageButton>
-          
+
           {Array.from({ length: totalPages }, (_, index) => (
             <S.ScrollPageButton
               key={index + 1}
@@ -168,7 +173,7 @@ export function SectionTransactions() {
             </S.ScrollPageButton>
           ))}
 
-          <S.ScrollPageButton 
+          <S.ScrollPageButton
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
             contrast={contrast}
