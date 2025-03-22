@@ -1,6 +1,6 @@
-import React, { useContext, useMemo, useState, useEffect } from 'react'
+import React, { useContext, useMemo, useState, useEffect, useRef } from 'react'
 import { useTheme } from '../../hooks/useTheme'
-import { CardMensal } from '../../components/CardMensal'
+import { CardDetails } from '../../components/CardDetails'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { TransactionsChart } from '../../components/TransactionsChart'
 
@@ -18,6 +18,12 @@ export function TransactionHistory() {
 			? `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`
 			: today.getFullYear().toString()
 	})
+	
+	const currentPeriod = useMemo(() => {
+		const now = new Date();
+		return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+	}, []);
+	const cardRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const today = new Date()
@@ -27,6 +33,13 @@ export function TransactionHistory() {
 			setSelectedPeriod(today.getFullYear().toString())
 		}
 	}, [viewMode])
+
+	// Inicializa o selectedPeriod com o período atual se não estiver definido
+	useEffect(() => {
+		if (!selectedPeriod) {
+			setSelectedPeriod(currentPeriod);
+		}
+	}, []);	
 
 	const periodData = useMemo(() => {
 		if (viewMode === 'monthly') {
@@ -72,6 +85,13 @@ export function TransactionHistory() {
 			}, {} as Record<string, { title: string; income: number; outcome: number }>)
 		}
 	}, [transactions, viewMode])
+
+	// Quando o período selecionado mudar, rola até o card correspondente
+	useEffect(() => {
+		if (cardRef.current) {
+			cardRef.current.scrollIntoView({ behavior: 'auto', block: 'center' });
+		}
+	}, [selectedPeriod, periodData]);
 
 	const chartData = useMemo(() => {
 		if (viewMode === 'monthly') {
@@ -140,13 +160,17 @@ export function TransactionHistory() {
 					{Object.entries(periodData)
 						.sort(([a], [b]) => b.localeCompare(a))
 						.map(([period, data]) => (
-							<CardMensal
+							<div
 								key={period}
-								title={data.title}
-								income={data.income}
-								outcome={data.outcome}
-								onDetailsClick={() => setSelectedPeriod(period)}
-							/>
+								ref={period === selectedPeriod ? cardRef : null}
+							>
+								<CardDetails
+									title={data.title}
+									income={data.income || undefined}
+									outcome={data.outcome || undefined}
+									onDetailsClick={() => setSelectedPeriod(period)}
+								/>
+							</div>
 						))}
 				</S.CardsGrid>
 				<S.ContainerChart>

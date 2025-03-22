@@ -200,18 +200,69 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   }
 
   const updateTransaction = async (id: string, data: EditTransactionFormInputs) => {
-    const transactionRef = doc(db, 'transactions', id)
-    await updateDoc(transactionRef, {
-      ...data,
-      updatedAt: serverTimestamp()
-    })
+    try {
+      const transactionsRef = collection(db, 'transactions');
+      const transactions: Transaction[] = [];
+      
+      // Atualiza a transação original
+      const transactionRef = doc(db, 'transactions', id);
+      const baseDate = new Date(data.createdAt || new Date());
+      
+      const updatedTransaction = {
+        name: data.name!,
+        price: data.price!,
+        category: data.category!,
+        type: data.type!,
+        userId: user!.id,
+        updatedAt: serverTimestamp(),
+        currentInstallment: 1,
+        createdAt: data.createdAt || new Date().toISOString(),
+        isRecurrent: data.isRecurrent || false,
+        recurrentMonths: data.recurrentMonths || 0
+      };
 
-    setTransactions(state => state.map(transaction => 
-      transaction.id === id 
-        ? { ...transaction, ...data } 
-        : transaction
-    ))
-  }
+      await updateDoc(transactionRef, updatedTransaction);
+      transactions.push({ id, ...updatedTransaction });
+
+      // Se adicionou recorrência, cria as transações futuras
+      if (data.isRecurrent && data.recurrentMonths && data.recurrentMonths > 1) {
+        for (let i = 1; i < data.recurrentMonths; i++) {
+          const nextDate = new Date(baseDate);
+          nextDate.setMonth(baseDate.getMonth() + i);
+          nextDate.setDate(baseDate.getDate());
+
+          const recurrentTransaction = {
+            name: data.name!,
+            price: data.price!,
+            category: data.category!,
+            type: data.type!,
+            userId: user!.id,
+            isRecurrent: data.isRecurrent || false,
+            recurrentMonths: data.recurrentMonths || 0,
+            currentInstallment: i + 1,
+            createdAt: Timestamp.fromDate(nextDate),
+            updatedAt: serverTimestamp()
+          };
+
+          const recurrentDocRef = await addDoc(transactionsRef, recurrentTransaction);
+          transactions.push({
+            id: recurrentDocRef.id,
+            ...recurrentTransaction,
+            createdAt: nextDate.toISOString()
+          });
+        }
+      }
+
+      // Atualiza o estado com todas as transações
+      setTransactions(state => {
+        const stateWithoutUpdated = state.filter(t => t.id !== id);
+        return [...transactions, ...stateWithoutUpdated];
+      });
+    } catch (error) {
+      console.error('Erro ao atualizar transação:', error);
+      throw new Error('Erro ao atualizar transação');
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
