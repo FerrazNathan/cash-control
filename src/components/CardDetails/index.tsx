@@ -3,20 +3,22 @@ import { priceFormatter } from '../../utils/formatter'
 
 import * as S from './styles'
 
-interface CardMensalProps {
-	income: number
-	outcome: number
+interface CardDetailsProps {
+	income?: number
+	outcome?: number
 	title: string
 	onDetailsClick: () => void
 }
 
-export function CardMensal({
+export function CardDetails({
 	income,
 	outcome,
 	title,
 	onDetailsClick,
-}: CardMensalProps) {
+}: CardDetailsProps) {
 	const { contrast, currentTheme } = useTheme()
+	const validateValue = income || outcome !== 0
+
 	return (
 		<S.ContainerCardMensal contrast={contrast} currentTheme={currentTheme}>
 			{title && (
@@ -26,14 +28,14 @@ export function CardMensal({
 			)}
 
 			<S.ContainerTransactionsBalnace>
-				{income && (
+				{income && validateValue && (
 					<S.ShowTransactions type="income" contrast={contrast}>
 						<h3>Entradas</h3>
 						<p>{priceFormatter.format(income)}</p>
 					</S.ShowTransactions>
 				)}
 
-				{outcome && (
+				{outcome && validateValue && (
 					<S.ShowTransactions type="outcome" contrast={contrast}>
 						<h3>Saídas</h3>
 						<p>{priceFormatter.format(outcome)}</p>
