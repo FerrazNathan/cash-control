@@ -116,10 +116,6 @@ export const TransactionRow = styled.div<TransactionsGridProps>`
       justify-content: center;
       padding: 1rem;
     }
-
-    @media(max-width: 448px) {
-      width: 250px;
-    }
   `}
 `
 

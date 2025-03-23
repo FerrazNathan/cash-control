@@ -42,7 +42,7 @@ export const ContainerCardsChart = styled.div`
 
 export const CardsGrid = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 1rem;
   width: 100%;
   max-width: 300px;

@@ -12,41 +12,42 @@ export const ContainerSummary = styled.section`
   padding: 0 1.5rem;
 
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  overflow-x: auto;
+  gap: 1rem;
   margin-top: 2rem;
 
-  @media (max-width: 768px) {
-    gap: 1rem;
-    overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+  &::-webkit-scrollbar {
+    display: none;
   }
+  
 `
 
 export const SummaryCard = styled.div<SummaryCardProps>`
   ${({ theme, contrast, variant }) => css`
     background: ${contrast ? theme.contrast.dark : theme.primary.light};
     border-radius: 8px;
-    padding: 2rem;
+    padding: 1rem;
     border: 1px solid ${contrast ? theme.contrast.standard : 'transparent'};
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: ${theme.text.light});
+      color: ${theme.text.light};
+      gap: 1rem;
     }
 
     strong {
       display: block;
-      margin-top: 1rem;
       font-size: 2rem;
+      white-space: nowrap;
 
       @media (max-width: 768px) {
         font-size: 1.5rem;
@@ -60,9 +61,5 @@ export const SummaryCard = styled.div<SummaryCardProps>`
     ${variant === 'negative' && css`
       background: ${contrast ? theme.contrast.dark : theme.error.medium};
     `}
-
-    @media (max-width: 768px) {
-      padding: 1rem;
-    }
   `}
 `

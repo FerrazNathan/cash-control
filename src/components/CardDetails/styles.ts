@@ -6,7 +6,7 @@ interface ContainerCardMensalProps {
 }
 
 interface ShowTransactionsProps {
-	type: 'income' | 'outcome'
+	type: 'income' | 'outcome' | 'investments'
 	contrast: boolean
 }
 
@@ -26,17 +26,26 @@ export const ContainerCardMensal = styled.div<ContainerCardMensalProps>`
 	`}
 `
 
-export const ContainerTransactionsBalnace = styled.div`
+export const ContainerTransactionsBalance = styled.div`
 	display: flex;
 	justify-content: space-between;
 	gap: 0.5rem;
 	width: 100%;
+	// cursor: pointer;
+	// overflow-x: scroll;
 
-	@media (max-width: 768px) {
+	// scrollbar-width: none;
+  // -ms-overflow-style: none;
+
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
+
+	// @media (max-width: 768px) {
 		flex-direction: column;
-		align-items: center;
-		min-width: 160px;
-	}
+	// 	align-items: center;
+	// 	min-width: 160px;
+	// }
 `
 
 export const TitleCardMensal = styled.h3`
@@ -49,7 +58,7 @@ export const TitleCardMensal = styled.h3`
 
 export const ShowTransactions = styled.div<ShowTransactionsProps>`
 	${({ type, theme, contrast }) => css`
-		background: ${contrast ? theme.contrast.dark : type === 'income' ? theme.success.medium : theme.error.medium};
+		background: ${contrast ? theme.contrast.dark : type === 'income' ? theme.success.medium : type === 'outcome' ? theme.error.medium : theme.contrast.dark};
 		border: 1px solid ${contrast ? theme.contrast.standard : 'transparent'};
 		color: ${theme.white};
 		border-radius: 8px;

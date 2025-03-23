@@ -3,6 +3,7 @@ import { useTheme } from '../../hooks/useTheme'
 import { CardDetails } from '../../components/CardDetails'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { TransactionsChart } from '../../components/TransactionsChart'
+import { investmentCategories } from '../../utils/categoryFilters'
 
 import * as S from './styles'
 
@@ -12,6 +13,7 @@ export function TransactionHistory() {
 	const { transactions } = useContext(TransactionsContext)
 	const { contrast, currentTheme } = useTheme()
 	const [viewMode, setViewMode] = useState<ViewMode>('monthly')
+	
 	const [selectedPeriod, setSelectedPeriod] = useState(() => {
 		const today = new Date()
 		return viewMode === 'monthly'
@@ -110,7 +112,10 @@ export function TransactionHistory() {
 				return {
 					day,
 					income: dayTransactions.reduce((sum, t) => t.type === 'income' ? sum + t.price : sum, 0),
-					outcome: dayTransactions.reduce((sum, t) => t.type === 'outcome' ? sum + t.price : sum, 0)
+					outcome: dayTransactions.reduce((sum, t) => t.type === 'outcome' ? sum + t.price : sum, 0),
+					investments: dayTransactions
+          .filter(t => investmentCategories.includes(t.category))
+          .reduce((sum, t) => sum + t.price, 0)
 				}
 			})
 		} else {
@@ -132,7 +137,10 @@ export function TransactionHistory() {
 					outcome: monthTransactions.reduce(
 						(sum, t) => t.type === 'outcome' ? sum + t.price : sum,
 						0
-					)
+					),
+					investments: monthTransactions
+						.filter(t => investmentCategories.includes(t.category))
+						.reduce((sum, t) => sum + t.price, 0)
 				}
 			})
 		}
@@ -168,6 +176,8 @@ export function TransactionHistory() {
 									title={data.title}
 									income={data.income || undefined}
 									outcome={data.outcome || undefined}
+									period={period}
+									viewMode={viewMode}
 									onDetailsClick={() => setSelectedPeriod(period)}
 								/>
 							</div>
