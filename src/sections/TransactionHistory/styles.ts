@@ -9,11 +9,11 @@ interface TransactionHistoryProps {
 export const Container = styled.section<TransactionHistoryProps>`
   ${({ theme, contrast, currentTheme }) => css`
     width: 100%;
-    max-width: 1120px;
+    max-width: 1360px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
     padding: 2rem 1rem;
 
     h2 {
@@ -31,7 +31,7 @@ export const Container = styled.section<TransactionHistoryProps>`
 
 export const ContainerCardsChart = styled.div`
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
 
   @media (max-width: 768px) {
@@ -45,7 +45,7 @@ export const CardsGrid = styled.div`
   flex-direction: column-reverse;
   gap: 1rem;
   width: 100%;
-  max-width: 300px;
+  max-width: 350px;
   max-height: 525px;
   overflow-y: auto;
   scrollbar-width: none;

@@ -21,7 +21,6 @@ export const ContainerCardMensal = styled.div<ContainerCardMensalProps>`
 		border-radius: 8px;
 		padding: 1rem;
 		width: 100%;
-		max-width: 300px;
 		gap: 0.5rem;
 	`}
 `
@@ -31,21 +30,21 @@ export const ContainerTransactionsBalance = styled.div`
 	justify-content: space-between;
 	gap: 0.5rem;
 	width: 100%;
-	// cursor: pointer;
-	// overflow-x: scroll;
+	cursor: pointer;
+	overflow-x: auto;
 
-	// scrollbar-width: none;
-  // -ms-overflow-style: none;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
 
-  // &::-webkit-scrollbar {
-  //   display: none;
-  // }
+	&::-webkit-scrollbar {
+		display: none;
+	}
 
-	// @media (max-width: 768px) {
+	@media (max-width: 768px) {
 		flex-direction: column;
-	// 	align-items: center;
-	// 	min-width: 160px;
-	// }
+		align-items: center;
+		min-width: 160px;
+	}
 `
 
 export const TitleCardMensal = styled.h3`
@@ -58,7 +57,7 @@ export const TitleCardMensal = styled.h3`
 
 export const ShowTransactions = styled.div<ShowTransactionsProps>`
 	${({ type, theme, contrast }) => css`
-		background: ${contrast ? theme.contrast.dark : type === 'income' ? theme.success.medium : type === 'outcome' ? theme.error.medium : theme.contrast.dark};
+		background: ${contrast ? theme.contrast.dark : type === 'income' ? theme.success.medium : type === 'outcome' ? theme.error.medium : ' #3F51B5'};
 		border: 1px solid ${contrast ? theme.contrast.standard : 'transparent'};
 		color: ${theme.white};
 		border-radius: 8px;

@@ -14,7 +14,7 @@ export const HeaderContainer = styled.header<HeaderContainerProps>`
 
 export const ContainerThemeToggle = styled.div`
   width: auto;
-  max-width: 1200px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 0 1.5rem;
   display: flex;
@@ -27,7 +27,7 @@ export const ContainerThemeToggle = styled.div`
 
 export const HeaderContent = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 1.5rem 1.5rem 0;
 
