@@ -1,15 +1,21 @@
 import { useSummary } from '../../hooks/useSummary'
 import { priceFormatter } from '../../utils/formatter'
-import { ArrowCircleDown, ArrowCircleUp, CurrencyDollar } from 'phosphor-react'
+import { ArrowCircleDown, ArrowCircleUp, CurrencyDollar, CurrencyBtc } from 'phosphor-react'
+
+import { useTheme } from '../../hooks/useTheme'
+import { useContext } from 'react'
+import { TransactionsContext } from '../../contexts/TransactionsContext'
+import { calculateInvestments } from '../../utils/categoryFilters'
 
 import * as S from './styles'
-import { useTheme } from '../../hooks/useTheme'
 
 export function Summary() {
   const summary = useSummary()
   const { contrast } = useTheme()
+  const { transactions } = useContext(TransactionsContext)
 
   const balanceCheck = summary.total >= 0 ? 'positive' : 'negative'
+  const investments = calculateInvestments(transactions)
 
   return (
     <S.ContainerSummary>
@@ -29,6 +35,15 @@ export function Summary() {
         </header>
 
         <strong>{priceFormatter.format(summary.outcome)}</strong>
+      </S.SummaryCard>
+
+      <S.SummaryCard contrast={contrast}>
+        <header>
+          <span>Investimentos</span>
+          <CurrencyBtc size={32} color='yellow' />
+        </header>
+
+        <strong>{priceFormatter.format(investments)}</strong>
       </S.SummaryCard>
 
       <S.SummaryCard contrast={contrast} variant={balanceCheck}>

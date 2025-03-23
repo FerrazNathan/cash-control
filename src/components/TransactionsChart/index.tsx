@@ -11,12 +11,14 @@ interface TransactionsChartProps {
     month?: string
     income: number
     outcome: number
+    investments: number
   }>
   viewMode: 'monthly' | 'yearly'
 }
 
 export function TransactionsChart({ period, data, viewMode }: TransactionsChartProps) {
 	const { contrast, currentTheme } = useTheme()
+
   const chartConfig: ChartConfig = {
     income: {
       label: "Entradas",
@@ -25,6 +27,10 @@ export function TransactionsChart({ period, data, viewMode }: TransactionsChartP
     outcome: {
       label: "Saídas",
       color: "#F75A68"
+    }, 
+    investments: {
+      label: "Investimentos",
+      color: "#FFD700"
     }
   }
 
@@ -64,6 +70,11 @@ export function TransactionsChart({ period, data, viewMode }: TransactionsChartP
               <Bar 
                 dataKey="outcome" 
                 fill={chartConfig.outcome.color} 
+                radius={[4, 4, 0, 0]}
+              />
+              <Bar 
+                dataKey="investments" 
+                fill={chartConfig.investments.color} 
                 radius={[4, 4, 0, 0]}
               />
             </BarChart>
