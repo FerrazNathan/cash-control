@@ -16,9 +16,10 @@ export function Summary() {
 
   const balanceCheck = summary.total >= 0 ? 'positive' : 'negative'
   const investments = calculateInvestments(transactions)
-
+  const investmentsCheck = investments !== undefined && investments > 0
+  
   return (
-    <S.ContainerSummary>
+    <S.ContainerSummary investmentsCheck={investmentsCheck}>
       <S.SummaryCard contrast={contrast}>
         <header>
           <span>Entradas</span>
@@ -37,14 +38,16 @@ export function Summary() {
         <strong>{priceFormatter.format(summary.outcome)}</strong>
       </S.SummaryCard>
 
-      <S.SummaryCard contrast={contrast}>
-        <header>
-          <span>Investimentos</span>
-          <CurrencyBtc size={32} color='yellow' />
-        </header>
+      {investmentsCheck && (
+        <S.SummaryCard contrast={contrast}>
+          <header>
+            <span>Investimentos</span>
+            <CurrencyBtc size={32} color='#FFC107' />
+          </header>
 
-        <strong>{priceFormatter.format(investments)}</strong>
-      </S.SummaryCard>
+          <strong>{priceFormatter.format(investments)}</strong>
+        </S.SummaryCard>
+      )}
 
       <S.SummaryCard contrast={contrast} variant={balanceCheck}>
         <header>

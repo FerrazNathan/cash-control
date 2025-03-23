@@ -16,7 +16,7 @@ interface ScrollPageButtonProps {
 
 export const ContainerTransactions = styled.main`
   width: 100%;
-  max-width: 1200px;
+  max-width: 1360px;
   margin: 4rem auto 0;
   padding: 0 1.5rem;
 
@@ -171,7 +171,7 @@ export const RecurrentBadge = styled.span`
   left: 14%;
   top: 10%;
   transform: translateY(-50%);
-  background: red;
+  background: #42A5F5;
   color: white;
   padding: 0.25rem 0.5rem;
   border-radius: 8px;

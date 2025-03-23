@@ -5,25 +5,30 @@ interface SummaryCardProps {
   contrast: boolean;
 }
 
-export const ContainerSummary = styled.section`
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+interface ContainerSummaryProps {
+  investmentsCheck?: boolean;
+}
 
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  overflow-x: auto;
-  gap: 1rem;
-  margin-top: 2rem;
+export const ContainerSummary = styled.section<ContainerSummaryProps>`
+  ${({ investmentsCheck }) => css`
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
 
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+    display: grid;
+    grid-template-columns: repeat(${investmentsCheck ? 4 : 3}, 1fr);
+    overflow-x: auto;
+    gap: 1rem;
+    margin-top: 2rem;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  `}
 `
 
 export const SummaryCard = styled.div<SummaryCardProps>`
@@ -35,12 +40,12 @@ export const SummaryCard = styled.div<SummaryCardProps>`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    color: ${theme.white};
 
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: ${theme.text.light};
       gap: 1rem;
     }
 

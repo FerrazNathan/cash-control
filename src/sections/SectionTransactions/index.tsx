@@ -9,6 +9,7 @@ import { Transaction } from '../../@types/transactionForm'
 import { EditTransaction } from '../../components/EditTransaction'
 
 import * as S from './styles'
+import { Pagination } from '../../components/Pagination'
 
 export function SectionTransactions() {
   const { currentTheme, contrast } = useTheme()
@@ -153,34 +154,13 @@ export function SectionTransactions() {
       )}
 
       {totalPages > 1 && (
-        <S.PaginationContainer>
-          <S.ScrollPageButton
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            contrast={contrast}
-          >
-            Anterior
-          </S.ScrollPageButton>
-
-          {Array.from({ length: totalPages }, (_, index) => (
-            <S.ScrollPageButton
-              key={index + 1}
-              onClick={() => handlePageChange(index + 1)}
-              isActive={currentPage === index + 1}
-              contrast={contrast}
-            >
-              {index + 1}
-            </S.ScrollPageButton>
-          ))}
-
-          <S.ScrollPageButton
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            contrast={contrast}
-          >
-            Próximo
-          </S.ScrollPageButton>
-        </S.PaginationContainer>
+         <Pagination
+         currentPage={currentPage}
+         totalPages={totalPages}
+         onPageChange={handlePageChange}
+         contrast={contrast}
+         currentTheme={currentTheme}
+       />
       )}
     </S.ContainerTransactions>
   )
