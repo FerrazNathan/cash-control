@@ -85,6 +85,7 @@ export function EditTransaction({ isOpen, onClose, transaction }: EditTransactio
             {...register('category')}
           />
           {errors.category && <S.ErrorMessage>{errors.category.message}</S.ErrorMessage>}
+          <span>Adicionando uma categoria "Investimentos", você terá acesso á gráficos e cálculos de investimentos.</span>
         </S.Label>
 
         <S.Label>
