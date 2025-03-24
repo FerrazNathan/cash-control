@@ -12,17 +12,35 @@ Um aplicativo de controle financeiro desenvolvido em React que permite gerenciar
 - Visualizar histórico de transações em uma tabela
 - Categorização das transações
 - Ordenação por data mais recente
+- Opção de registrar investimentos
+- Possibilidade de registrar transações recorrentes
+- Acompanhamento do progresso das transações recorrentes
 
 ### 2. Dashboard
 - Resumo financeiro com:
 - Total de entradas
 - Total de saídas
 - Saldo total (com indicador visual positivo/negativo)
+- Saldo de investimentos (caso seja cadastrado)
 
 ### 3. Busca e Filtros
 - Pesquisa por descrição ou categoria
-- Filtro case-insensitive
+- Filtro por mês
+- Filtro por tipo de transação
+- Filtro por range de preço
+- Filtros case-insensitive
 - Resultados em tempo real
+
+### 4. Tela de Histórico
+- Opção de visualização (mensal ou anual)
+- Gráfico de acompanhamento das transações
+- Opção de acompanhamento personalizado por mês ou ano
+
+### 5. Aplicação independente por usuário
+- Sistema integrado com o firebase
+- Usuário autenticado pelo firebase
+- Segurança nas informações
+- Transações únicas por usuário
 
 
 ## 💻 Tecnologias Utilizadas
@@ -31,15 +49,17 @@ Um aplicativo de controle financeiro desenvolvido em React que permite gerenciar
 - React
 - TypeScript
 - Vite
+- Javascript
 #### Estilização
 - Styled Components
 - Phosphor Icons
 - Radix UI (Dialog, Radio Group)
+- Shadcn/ui (gráficos)
 
 #### Gerenciamento de Estado e Dados
 - React Context API
 - Axios
-- JSON Server (API Mock)
+- Api do firebase 100% integrada com o usuário
 
 #### Formulários e Validação
 - React Hook Form
@@ -49,6 +69,8 @@ Um aplicativo de controle financeiro desenvolvido em React que permite gerenciar
 - useContext
 - useMemo
 - useCallback
+- useState
+- useEffect
 
 ## 🛠️ Instalação
 
@@ -65,16 +87,6 @@ npm run server ou yarn server
 # Inicie a aplicação
 npm run dev ou yarn dev
 ```
-
-
-## 📌 Endpoints da API
-
-O projeto utiliza JSON Server rodando na porta 3333 com os seguintes endpoints:
-
-- GET /transactions - Lista todas as transações
-- POST /transactions - Cria uma nova transação
-
-
 
 ## 🔍 Estrutura do Projeto
 
@@ -95,3 +107,5 @@ O projeto utiliza um tema customizado com uma paleta de cores predefinida, inclu
 - Tons de cinza para o layout base
 - Verde para indicadores positivos
 - Vermelho para indicadores negativos
+- Opção de temas light e dark
+- Tema contraste para acessibilidade
