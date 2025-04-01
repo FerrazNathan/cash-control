@@ -58,9 +58,11 @@ export const CardsGrid = styled.div`
 
   @media (max-width: 768px) {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     overflow: auto;
     max-width: 100%;
+    height: 100%;
+    align-items: stretch;
   }
 `
 
