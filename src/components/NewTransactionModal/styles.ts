@@ -52,17 +52,18 @@ export const FormContainer = styled.form<FormContainerProps>`
     gap: 1rem;    
 
     input {
-      border-radius: 6px;
+      border-radius: 8px;
       border: 0;
-      background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.background.standard : theme.surface.light};
+      background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.background.standard : theme.white};
       color: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.text.light : theme.text.standard};
       border: 1px solid ${contrast ? theme.contrast.highlight : theme.surface.standard};
       padding: 1rem;
       outline: 0;
       cursor: pointer;
+      box-shadow: ${currentTheme === 'light' ? '0px 4px 16px 4px rgba(29, 29, 29, 0.24)' : ''};
 
       &::placeholder {
-        color: ${currentTheme === 'dark' ? theme.surface.standard : theme.text.standard};
+        color: ${theme.surface.light};
       }
     }
 
@@ -98,7 +99,7 @@ export const CloseButton = styled(Dialog.Close)`
   right: 1.5rem;
   line-height: 0;
   cursor: pointer;
-  color: ${props => props.theme.surface.standard};
+  color: ${props => props.theme.text.standard};
 `
 
 export const TransactionType = styled(RadioGroup.Root)`
@@ -110,7 +111,7 @@ export const TransactionType = styled(RadioGroup.Root)`
 
 export const TransactionTypeButton = styled(RadioGroup.Item)<TransactionTypeButtonProps>`
   ${({ theme, contrast, variant, currentTheme }) => css`
-    background: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.primary.light : theme.surface.light};
+    background: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.primary.light : theme.white};
     border-radius: 8px;
     border: 0;
     display: flex;
@@ -118,8 +119,9 @@ export const TransactionTypeButton = styled(RadioGroup.Item)<TransactionTypeButt
     justify-content: center;
     gap: 0.5rem;
     cursor: pointer;
-    color: ${contrast ? theme.contrast.dark : theme.white};
-    padding: 1rem;
+    color: ${contrast ? theme.contrast.dark : theme.text.standard};
+    padding: 1rem;    
+    box-shadow: ${currentTheme === 'light' ? '0px 4px 16px 4px rgba(29, 29, 29, 0.24)' : ''};
 
     svg {
       color: ${contrast ? theme.contrast.dark : variant === 'income' ? theme.success.medium : theme.error.light};
@@ -137,7 +139,7 @@ export const TransactionTypeButton = styled(RadioGroup.Item)<TransactionTypeButt
 
     &[data-state='unchecked']:hover {
       transition: background-color 0.2s;
-      background: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.primary.light : theme.surface.light};
+      background: ${contrast ? theme.contrast.highlight : currentTheme === 'dark' ? theme.primary.light : theme.white};
     }
   `}
 `

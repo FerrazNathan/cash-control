@@ -18,7 +18,7 @@ export const Content = styled(Dialog.Content)<ContentProps>`
   ${({ theme, contrast, currentTheme }) => css`
     border-radius: 8px;
     padding: 2rem;
-    background: ${contrast ? theme.contrast.dark: currentTheme === 'dark' ? theme.primary.standard : theme.background.medium};
+    background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.primary.standard : theme.background.medium};
     position: fixed;
     top: 50%;
     left: 50%;
@@ -47,7 +47,7 @@ export const CloseButton = styled(Dialog.Close)<ContentProps>`
     right: 0.5rem;
     line-height: 0;
     cursor: pointer;
-    color: ${contrast ? theme.contrast.highlight : theme.surface.standard};
+    color: ${contrast ? theme.contrast.highlight : theme.text.standard};
   `}
 `                   
 

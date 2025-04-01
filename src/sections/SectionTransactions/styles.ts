@@ -28,6 +28,7 @@ export const ContainerTransactions = styled.main`
 export const ContainerMainGridTransactions = styled.div`
   width: 100%;
   overflow-x: auto;
+  padding: 0.5rem;
   
   @media (max-width: 768px) {
     padding-bottom: 1rem;
@@ -103,11 +104,12 @@ export const TransactionRow = styled.div<TransactionsGridProps>`
     padding: 1.25rem 2rem;
     gap: 1rem;
     align-items: center;
-    background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.primary.medium : theme.surface.standard};
+    background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.primary.medium : theme.white};
     border: 1px solid ${contrast ? theme.contrast.standard : 'transparent'};
     border-radius: 8px;
     position: relative;
     width: 100%;
+    box-shadow: ${currentTheme === 'light' ? '0px 2px 8px 2px rgba(29, 29, 29, 0.24)' : ''};
 
     @media (max-width: 768px) {
       display: flex;

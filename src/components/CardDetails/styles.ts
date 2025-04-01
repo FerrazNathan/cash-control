@@ -16,12 +16,13 @@ export const ContainerCardMensal = styled.div<ContainerCardMensalProps>`
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.primary.light : theme.surface.standard};
+		background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.primary.light : theme.white};
 		border: 1px solid ${contrast ? theme.contrast.standard : 'transparent'};
 		border-radius: 8px;
 		padding: 1rem;
 		width: 100%;
 		gap: 0.5rem;
+		box-shadow: ${currentTheme === 'light' ? '0px 2px 8px 2px rgba(29, 29, 29, 0.24)' : ''};
 	`}
 `
 
