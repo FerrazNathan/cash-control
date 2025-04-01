@@ -48,6 +48,7 @@ export const CardsGrid = styled.div`
   max-width: 350px;
   max-height: 525px;
   overflow-y: auto;
+  padding: 0.5rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
 

@@ -7,10 +7,11 @@ interface Themes {
 
 const StyledCard = styled.div<Themes>`
 	${({ theme, contrast, currentTheme }) => css`
-  background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.background.standard : theme.surface.standard};
+  background: ${contrast ? theme.contrast.dark : currentTheme === 'dark' ? theme.background.standard : theme.white};
   border-radius: 8px;
   padding: 1.5rem;
   border: 1px solid ${contrast ? theme.contrast.standard : 'transparent'};
+	box-shadow: ${currentTheme === 'light' ? '0px 4px 16px 4px rgba(29, 29, 29, 0.24)' : ''};
 `}
 `
 
