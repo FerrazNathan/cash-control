@@ -1,51 +1,57 @@
-import React, { useContext, useState } from 'react'
-import { SearchTransactions } from '../SearchTransactions'
-import { TransactionsContext } from '../../contexts/TransactionsContext'
-import { dateFormatter, priceFormatter } from '../../utils/formatter'
-import { PencilSimpleLine, Trash } from 'phosphor-react'
-import { useTheme } from '../../hooks/useTheme';
-import { DeleteConfirmation } from '../../components/DeleteConfirmation'
-import { Transaction } from '../../@types/transactionForm'
-import { EditTransaction } from '../../components/EditTransaction'
+import React, { useContext, useState } from "react";
+import { SearchTransactions } from "../SearchTransactions";
+import { TransactionsContext } from "../../contexts/TransactionsContext";
+import { dateFormatter, priceFormatter } from "../../utils/formatter";
+import { PencilSimpleLine, Trash } from "phosphor-react";
+import { useTheme } from "../../hooks/useTheme";
+import { DeleteConfirmation } from "../../components/DeleteConfirmation";
+import { Transaction } from "../../@types/transactionForm";
+import { EditTransaction } from "../../components/EditTransaction";
+import { Pagination } from "../../components/Pagination";
 
-import * as S from './styles'
-import { Pagination } from '../../components/Pagination'
+import * as S from "./styles";
 
 export function SectionTransactions() {
-  const { currentTheme, contrast } = useTheme()
-  const { transactions, deleteTransaction } = useContext(TransactionsContext)
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [transactionToDelete, setTransactionToDelete] = useState<string | null>(null)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [transactionToEdit, setTransactionToEdit] = useState<Transaction | null>(null)
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 10
+  const { currentTheme, contrast } = useTheme();
+  const { transactions, deleteTransaction } = useContext(TransactionsContext);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [transactionToDelete, setTransactionToDelete] = useState<string | null>(
+    null
+  );
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [transactionToEdit, setTransactionToEdit] =
+    useState<Transaction | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // Calcula o índice inicial e final dos itens da página atual
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentTransactions = transactions.slice(indexOfFirstItem, indexOfLastItem)
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentTransactions = transactions.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   // Calcula o total de páginas
-  const totalPages = Math.ceil(transactions.length / itemsPerPage)
+  const totalPages = Math.ceil(transactions.length / itemsPerPage);
 
   async function handleDeleteTransaction(id: string) {
-    setTransactionToDelete(id)
-    setIsDeleteModalOpen(true)
+    setTransactionToDelete(id);
+    setIsDeleteModalOpen(true);
   }
 
   function handleOpenEditModal(transaction: Transaction) {
-    setTransactionToEdit(transaction)
-    setIsEditModalOpen(true)
+    setTransactionToEdit(transaction);
+    setIsEditModalOpen(true);
   }
 
   function handleCloseEditModal() {
-    setTransactionToEdit(null)
-    setIsEditModalOpen(false)
+    setTransactionToEdit(null);
+    setIsEditModalOpen(false);
   }
 
   function handlePageChange(pageNumber: number) {
-    setCurrentPage(pageNumber)
+    setCurrentPage(pageNumber);
   }
 
   return (
@@ -53,14 +59,14 @@ export function SectionTransactions() {
       <DeleteConfirmation
         isOpen={isDeleteModalOpen}
         onClose={() => {
-          setIsDeleteModalOpen(false)
-          setTransactionToDelete(null)
+          setIsDeleteModalOpen(false);
+          setTransactionToDelete(null);
         }}
         onConfirm={() => {
           if (transactionToDelete) {
-            deleteTransaction(transactionToDelete)
-            setIsDeleteModalOpen(false)
-            setTransactionToDelete(null)
+            deleteTransaction(transactionToDelete);
+            setIsDeleteModalOpen(false);
+            setTransactionToDelete(null);
           }
         }}
       />
@@ -88,14 +94,13 @@ export function SectionTransactions() {
                   >
                     <S.ContainerCardTransctions>
                       <strong>Nome: </strong>
-                      <span data-label="Nome">
-                        {transaction.name}
-                      </span>
+                      <span data-label="Nome">{transaction.name}</span>
                     </S.ContainerCardTransctions>
 
                     {transaction.isRecurrent && (
                       <S.RecurrentBadge>
-                        Parcela {transaction.currentInstallment} de {transaction.recurrentMonths}
+                        Parcela {transaction.currentInstallment} de{" "}
+                        {transaction.recurrentMonths}
                       </S.RecurrentBadge>
                     )}
 
@@ -103,7 +108,7 @@ export function SectionTransactions() {
                       <strong>Preço:</strong>
                       <span data-label="Preço">
                         <S.PriceHighlight variant={transaction.type}>
-                          {transaction.type === 'outcome' && '- '}
+                          {transaction.type === "outcome" && "- "}
                           {priceFormatter.format(transaction.price)}
                         </S.PriceHighlight>
                       </span>
@@ -111,9 +116,7 @@ export function SectionTransactions() {
 
                     <S.ContainerCardTransctions>
                       <strong>Categoria: </strong>
-                      <span data-label="Categoria">
-                        {transaction.category}
-                      </span>
+                      <span data-label="Categoria">{transaction.category}</span>
                     </S.ContainerCardTransctions>
 
                     <S.ContainerCardTransctions>
@@ -128,17 +131,20 @@ export function SectionTransactions() {
                         title="Editar"
                         onClick={() => handleOpenEditModal(transaction)}
                       >
-                        <PencilSimpleLine size={20} color={contrast ? 'yellow' : 'green'} />
+                        <PencilSimpleLine
+                          size={20}
+                          color={contrast ? "yellow" : "green"}
+                        />
                       </button>
                       <button
                         title="Excluir"
                         onClick={() => handleDeleteTransaction(transaction.id)}
                       >
-                        <Trash size={20} color={contrast ? 'yellow' : 'red'} />
+                        <Trash size={20} color={contrast ? "yellow" : "red"} />
                       </button>
                     </S.ActionButtons>
                   </S.TransactionRow>
-                )
+                );
               })}
             </S.TransactionsGrid>
           </S.ContainerMainGridTransactions>
@@ -154,14 +160,14 @@ export function SectionTransactions() {
       )}
 
       {totalPages > 1 && (
-         <Pagination
-         currentPage={currentPage}
-         totalPages={totalPages}
-         onPageChange={handlePageChange}
-         contrast={contrast}
-         currentTheme={currentTheme}
-       />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          contrast={contrast}
+          currentTheme={currentTheme}
+        />
       )}
     </S.ContainerTransactions>
-  )
+  );
 }
